@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark as faBookmarkRegular } from '@fortawesome/free-regular-svg-icons'
-import { topNews, latestNews, newsByCategory } from "../newsData.js";
+import { faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons'
+import { topNews, latestNews, newsByCategory, likedNewsSample as initialLikedNews } from "../newsData.js";
 
-const LatestNewsCard = ({ news }) => {
+const LatestNewsCard = ({ news, onToggleBookmark, isLiked }) => {
     return(
         <div className="flex flex-col max-w-105 gap-4">
             <img src={news.banner_url} alt="banner" className="w-105 h-60 rounded-xl"/>
@@ -13,9 +14,11 @@ const LatestNewsCard = ({ news }) => {
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {news.created_date}</p>
                     </div>
-                    <div className="flex items-center justify-center h-[26px] cursor-pointer">
+                    <div
+                        className="flex items-center justify-center h-[26px] cursor-pointer"
+                        onClick={() => onToggleBookmark(news.newsid)}>
                         <FontAwesomeIcon
-                            icon={faBookmarkRegular}
+                            icon={isLiked(news.newsid) ? faBookmarkSolid : faBookmarkRegular}
                             style={{ width: "20px", height: "26px" }}
                         />
                     </div>
@@ -26,20 +29,24 @@ const LatestNewsCard = ({ news }) => {
     )
 }
 
-const LatestNewsSection = ({ newsItems }) => {
+const LatestNewsSection = ({ newsItems, onToggleBookmark, isLiked }) => {
     return(
         <div className="mt-16 mb-16">
             <h2 className="text-5xl font-bold">Latest News</h2>
             <div className="mt-6 flex flex-row justify-between">
                 {newsItems.map((news, index) => {
-                    return <LatestNewsCard key={index} news={news} />
+                    return <LatestNewsCard
+                        key={index}
+                        news={news}
+                        onToggleBookmark={onToggleBookmark}
+                        isLiked={isLiked}/>
                 })}
             </div>
         </div>
     )
 }
 
-const CategoryNewsCard = ({ news }) => {
+const CategoryNewsCard = ({ news, onToggleBookmark, isLiked }) => {
     return (
         <div className="flex flex-col max-w-105 gap-2">
             <img src={news.banner_url} alt="banner" className="w-105 h-60 rounded-xl"/>
@@ -53,9 +60,11 @@ const CategoryNewsCard = ({ news }) => {
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {news.created_date}</p>
                     </div>
-                    <div className="flex items-center justify-center h-[26px] cursor-pointer">
+                    <div
+                        className="flex items-center justify-center h-[26px] cursor-pointer"
+                        onClick={() => onToggleBookmark(news.newsid)}>
                         <FontAwesomeIcon
-                            icon={faBookmarkRegular}
+                            icon={isLiked(news.newsid) ? faBookmarkSolid : faBookmarkRegular}
                             style={{ width: "20px", height: "26px" }}
                         />
                     </div>
@@ -66,13 +75,17 @@ const CategoryNewsCard = ({ news }) => {
     )
 }
 
-const CategorySection = ({ title, newsItems }) => {
+const CategorySection = ({ title, newsItems, onToggleBookmark, isLiked }) => {
     return(
         <div className="mt-6">
             <h2 className="text-5xl font-bold">{title}</h2>
             <div className="mt-6 flex flex-row justify-between">
                 {newsItems.map((news, index) => {
-                    return <CategoryNewsCard key={index} news={news} />
+                    return <CategoryNewsCard
+                        key={index}
+                        news={news}
+                        onToggleBookmark={onToggleBookmark}
+                        isLiked={isLiked}/>
                 })}
             </div>
         </div>
@@ -80,6 +93,21 @@ const CategorySection = ({ title, newsItems }) => {
 }
 
 function Home() {
+
+    const [likedNews, setLikedNews] = useState(initialLikedNews)
+
+    const isNewsLiked = (newsid) => {
+        return likedNews.includes(newsid)
+    }
+
+    const toggleBookmark = (newsid) => {
+        if(isNewsLiked(newsid)){
+            setLikedNews(likedNews.filter(id => id !== newsid))
+        }
+        else {
+            setLikedNews([...likedNews, newsid])
+        }
+    }
 
     return(
         <div className="font-inter">
@@ -105,9 +133,11 @@ function Home() {
                                     <p className="text-sheen font-bold">{topNews[0].category}</p>
                                     <p>| {topNews[0].created_date}</p>
                                 </div>
-                                <div className="flex items-center justify-center h-[26px] cursor-pointer">
+                                <div
+                                    className="flex items-center justify-center h-[26px] cursor-pointer"
+                                    onClick={() => toggleBookmark(topNews[0].newsid)}>
                                     <FontAwesomeIcon
-                                        icon={faBookmarkRegular}
+                                        icon={isNewsLiked(topNews[0].newsid) ? faBookmarkSolid : faBookmarkRegular}
                                         style={{ width: "20px", height: "26px" }}
                                     />
                                 </div>
@@ -124,9 +154,11 @@ function Home() {
                                         <p className="text-sheen font-bold">{topNews[1].category}</p>
                                         <p>| {topNews[1].created_date}</p>
                                     </div>
-                                    <div className="flex items-center justify-center h-[26px] cursor-pointer">
+                                    <div
+                                        className="flex items-center justify-center h-[26px] cursor-pointer"
+                                        onClick={() => toggleBookmark(topNews[1].newsid)}>
                                         <FontAwesomeIcon
-                                            icon={faBookmarkRegular}
+                                            icon={isNewsLiked(topNews[1].newsid) ? faBookmarkSolid : faBookmarkRegular}
                                             style={{ width: "20px", height: "26px" }}
                                         />
                                     </div>
@@ -143,9 +175,11 @@ function Home() {
                                         <p className="text-sheen font-bold">{topNews[2].category}</p>
                                         <p>| {topNews[2].created_date}</p>
                                     </div>
-                                    <div className="flex items-center justify-center h-[26px] cursor-pointer">
+                                    <div
+                                        className="flex items-center justify-center h-[26px] cursor-pointer"
+                                        onClick={() => toggleBookmark(topNews[2].newsid)}>
                                         <FontAwesomeIcon
-                                            icon={faBookmarkRegular}
+                                            icon={isNewsLiked(topNews[2].newsid) ? faBookmarkSolid : faBookmarkRegular}
                                             style={{ width: "20px", height: "26px" }}
                                         />
                                     </div>
@@ -157,12 +191,35 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <LatestNewsSection newsItems={latestNews} />
-                <CategorySection title="Politik" newsItems={newsByCategory.politik} />
-                <CategorySection title="Olahraga" newsItems={newsByCategory.olahraga} />
-                <CategorySection title="Teknologi" newsItems={newsByCategory.teknologi} />
-                <CategorySection title="Ekonomi" newsItems={newsByCategory.ekonomi} />
-                <CategorySection title="Sains" newsItems={newsByCategory.sains} />
+                <LatestNewsSection
+                    newsItems={latestNews}
+                    onToggleBookmark={toggleBookmark}
+                    isLiked={isNewsLiked}/>
+                <CategorySection
+                    title="Politik"
+                    newsItems={newsByCategory.politik}
+                    onToggleBookmark={toggleBookmark}
+                    isLiked={isNewsLiked}/>
+                <CategorySection
+                    title="Olahraga"
+                    newsItems={newsByCategory.olahraga}
+                    onToggleBookmark={toggleBookmark}
+                    isLiked={isNewsLiked}/>
+                <CategorySection
+                    title="Teknologi"
+                    newsItems={newsByCategory.teknologi}
+                    onToggleBookmark={toggleBookmark}
+                    isLiked={isNewsLiked}/>
+                <CategorySection
+                    title="Ekonomi"
+                    newsItems={newsByCategory.ekonomi}
+                    onToggleBookmark={toggleBookmark}
+                    isLiked={isNewsLiked}/>
+                <CategorySection
+                    title="Sains"
+                    newsItems={newsByCategory.sains}
+                    onToggleBookmark={toggleBookmark}
+                    isLiked={isNewsLiked}/>
             </main>
             <footer className="p-12 mt-16 gap-4 bg-darkgray text-white flex flex-col">
                 <p className="text-5xl font-bold">News Web</p>
