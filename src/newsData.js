@@ -254,3 +254,54 @@ export const likedNewsSample = [
     "f10adb58-b634-4a22-8d12-163f3d3074b6",
     "b3b9b418-f5cc-4504-9615-92a02c2ebda2"
 ]
+
+export const sampleDetailNews = {
+    category: "Politik",
+    title: "Mahasiswa Uji UU Kementerian, Kritik Menteri Rangkap Pengurus Parpol",
+    author: "Admin",
+    created_date: "1 Mei 2025",
+    auth_pp: "https://firebasestorage.googleapis.com/v0/b/newsweb-ef5bf.firebasestorage.app/o/Profile%20Picture%2FDefault_Profile_Picture.jpg?alt=media&token=ed2096aa-24bf-459a-afbd-b5d1c2424396",
+    image_url: "https://storage.googleapis.com/newsweb-ef5bf.firebasestorage.app/News Image/a24c76a0-4f8a-4a85-8ef0-bbdcaa28c6bf_1746613473605_image",
+    likes: 10,
+    content: "Jakarta - Empat mahasiswa mengajukan uji materi terhadap Pasal 23 huruf c Undang-Undang Nomor 39 Tahun 2008 tentang Kementerian Negara (UU Kementerian) ke Mahkamah Konstitusi. Mereka menilai ketentuan itu membuka celah bagi praktik rangkap jabatan menteri sebagai pengurus partai politik, yang berdampak pada turunnya kualitas pelayanan publik dan melemahnya prinsip demokrasi.\\n\\nGugatan itu teregistrasi dengan Nomor Perkara 35/PUU-XXIII/2025 dan disidangkan perdana di Gedung MK pada Senin, 28 April 2025. Dalam persidangan, kuasa hukum pemohon, Abu Rizal Biladina, menyebut banyak menteri yang tersandung korupsi justru berasal dari kalangan pengurus partai.\\n\\n“Para menteri yang melakukan praktik korupsi sebagian besar merupakan menteri yang rangkap jabatan sebagai pengurus parpol sehingga hal tersebut melanggar ketentuan Pasal 27 ayat (1) UUD NRI Tahun 1945,” ujar Abu Rizal Biladina selaku kuasa hukum para pemohon dalam sidang pendahuluan dikutip dari situs MK pada Selasa, 29 April 2025.\\n\\nPara pemohon berpendapat, rangkap jabatan menteri sebagai fungsionaris partai menyebabkan melemahnya fungsi check and balances antara eksekutif dan legislatif. Mereka juga menilai praktik tersebut melanggengkan pragmatisme politik, yang merusak arah perjuangan dan semangat partai serta mencederai prinsip negara hukum.\\n\\nDalam permohonan mereka, para mahasiswa menyinggung pola yang terjadi sejak era Presiden Susilo Bambang Yudhoyono hingga kini. Di masa Kabinet Indonesia Bersatu II, enam pengurus parpol menjabat menteri, termasuk Muhaimin Iskandar dari PKB. Di era Presiden Joko Widodo, jumlah itu meningkat menjadi sembilan, termasuk Prabowo Subianto dari Partai Gerindra. Presiden Prabowo Subianto pun melanjutkan tren ini dengan mengangkat Zulkifli Hasan (PAN) dan Agus Harimurti Yudhoyono (Demokrat) sebagai menteri.\\n\\nMereka menilai kecenderungan presiden merangkul partai politik melalui jatah kursi menteri memperkuat koalisi pemerintah dan menyingkirkan fungsi oposisi. “Parpol yang sebelumnya tidak mendukung, saat bergabung ke koalisi selalu mendapat jatah menteri,” tulis para pemohon dalam berkasnya.\\n\\nDalam petitumnya, para pemohon meminta Mahkamah menyatakan Pasal 23 huruf c UU Kementerian Negara bertentangan dengan UUD 1945 dan tidak memiliki kekuatan hukum mengikat, sepanjang tidak dimaknai mencakup pula fungsionaris partai politik.\\n\\nMajelis Hakim Panel yang diketuai Enny Nurbaningsih menyarankan agar pemohon memperjelas argumentasi norma yang diuji, serta merinci kerugian konstitusional yang dialami. Hakim Arsul Sani menyoroti lemahnya penjabaran soal fungsi pengawasan DPR yang terdampak rangkap jabatan. “Kenapa kok anggota DPR tidak bisa melakukan fungsi check and balances gara-gara ada menteri yang rangkap jabatan?” katanya.\\n\\nHakim Konstitusi Daniel Yusmic Foekh menambahkan, pemohon bisa menambahkan perbandingan praktik serupa di negara lain untuk memperkuat dalil permohonan. Sementara Enny menutup sidang dengan memberi waktu 14 hari bagi para pemohon untuk memperbaiki permohonan. Berkas revisi paling lambat diterima Mahkamah pada Rabu, 14 Mei 2025.",
+    like_status: null
+}
+
+export const sampleComment = {
+    comment: [
+        {
+            commentid: "7b7a5f18-2ad6-4f83-9f14-d97557f0ef08",
+            commentator_pp: "https://firebasestorage.googleapis.com/v0/b/newsweb-ef5bf.firebasestorage.app/o/Profile%20Picture%2FDefault_Profile_Picture.jpg?alt=media&token=ed2096aa-24bf-459a-afbd-b5d1c2424396",
+            commentator: "User 1",
+            createdat: "3 Mei 2025 22:30:00",
+            comment: "AI agen yang benar-benar bisa bekerja mandiri bisa sangat membantu orang-orang dalam menyelesaikan pekerjaan repetitif. Semoga teknologinya bisa diakses luas, bukan cuma untuk mereka yang punya banyak uang",
+            votes: 1
+        },
+        {
+            commentid: "eb8a834b-bd5a-4775-bb10-c273aba3e581",
+            commentator_pp: "https://firebasestorage.googleapis.com/v0/b/newsweb-ef5bf.firebasestorage.app/o/Profile%20Picture%2FDefault_Profile_Picture.jpg?alt=media&token=ed2096aa-24bf-459a-afbd-b5d1c2424396",
+            commentator: "User 2",
+            createdat: "2 Mei 2025 12:30:00",
+            comment: "21% perusahaan sudah pakai agen AI, dan akan naik jadi 80% pada 2026? Ini perkembangan yang sangat cepat! Dunia kerja akan berubah drastis dalam beberapa tahun ke depan.",
+            votes: 5
+        },
+        {
+            commentid: "eaa0226a-ea63-4ee2-b77b-e70a103d1005",
+            commentator_pp: "https://firebasestorage.googleapis.com/v0/b/newsweb-ef5bf.firebasestorage.app/o/Profile%20Picture%2FDefault_Profile_Picture.jpg?alt=media&token=ed2096aa-24bf-459a-afbd-b5d1c2424396",
+            commentator: "User 3",
+            createdat: "1 Mei 2025 11:30:00",
+            comment: "AI dari Tiongkok? Serius, kita harus lebih waspada. Jangan-jangan ini cuma cara lain buat mereka memperluas pengaruhnya di dunia teknologi. Lihat aja, aksesnya terbatas, cuma bisa pakai undangan, dan malah dijual sampai ratusan juta. Kayak ada sesuatu yang disembunyikan. Apalagi, kita tahu kalau perusahaan teknologi di sana sering kali punya hubungan erat dengan pemerintah.",
+            votes: -4
+        }
+    ],
+    like_status: [
+        {
+            commentid: "7b7a5f18-2ad6-4f83-9f14-d97557f0ef08",
+            like_status: "Like"
+        },
+        {
+            commentid: "eaa0226a-ea63-4ee2-b77b-e70a103d1005",
+            like_status: "Dislike"
+        }
+    ]
+}
