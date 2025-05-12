@@ -4,6 +4,10 @@ import ReactDOM from "react-dom/client";
 import Home from './components/Home.jsx';
 import NewsDetail from './components/NewsDetail.jsx';
 import CategoricalNews from './components/CategoricalNews.jsx';
+import Login from './components/Login.jsx';
+import Signup from './components/Signup.jsx';
+import Dashboard from './components/Dashboard.jsx'
+import SavedNews from './components/SavedNews.jsx';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -22,6 +26,22 @@ const router = createBrowserRouter([
     {
         path: "/category/:category",
         element: <CategoricalNews />
+    },
+    {
+        path: "/login",
+        element: <Login />
+    },
+    {
+        path: "/signup",
+        element: <Signup />
+    },
+    {
+        path: "/dashboard",
+        element: <Dashboard />
+    },
+    {
+        path: "/saved",
+        element: <SavedNews />
     }
 ]);
 

@@ -213,6 +213,10 @@ function NewsDetail(){
         navigate(`/category/${category}`)
     }
 
+    const handleLogin = () => {
+        navigate("/login")
+    }
+
     return(
         <div className="font-inter">
             <nav className="h-18 px-10 bg-darkgray flex flex-row justify-between items-center">
@@ -227,7 +231,9 @@ function NewsDetail(){
                     <p onClick={() => handleCategoryClick("Sains")}>Sains</p>
                     <p onClick={() => handleCategoryClick("All")}>Semua Berita</p>
                 </div>
-                <button className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer">Log in</button>
+                <button
+                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
+                    onClick={() => handleLogin()}>Log in</button>
             </nav>
             <main className="flex-grow bg-darkgray flex justify-center">
                 <div className="w-320 px-10 pt-10 min-h-screen bg-white">

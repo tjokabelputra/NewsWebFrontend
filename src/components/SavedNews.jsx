@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons";
-import { faMagnifyingGlass, faBookmark as faBookmarkSolid } from "@fortawesome/free-solid-svg-icons";
-import { politicsCategorySample, politicsCategorySaved } from "../newsData.js";
+import React, {useState} from 'react';
+import { useNavigate } from "react-router-dom";
+import {politicsCategorySample, sampleUser} from "../newsData.js";
+import { SavedNewsSample } from "../newsData.js";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBookmark as faBookmarkSolid, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 
-const NewsCard = ({ news, isNewsSaved, toggleBookmark, newsDetail }) => {
+const NewsCard = ({ news, unsave, newsDetail }) => {
     return(
         <div className="flex flex-row gap-6">
             <div className="w-60 h-36 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
@@ -32,9 +32,9 @@ const NewsCard = ({ news, isNewsSaved, toggleBookmark, newsDetail }) => {
                     </div>
                     <div
                         className="flex items-center justify-center h-[26px] cursor-pointer"
-                        onClick={() => toggleBookmark(news.newsid)}>
+                        onClick={() => unsave(news.newsid)}>
                         <FontAwesomeIcon
-                            icon={isNewsSaved(news.newsid) ? faBookmarkSolid : faBookmarkRegular}
+                            icon={faBookmarkSolid}
                             style={{ width: "20px", height: "26px" }}
                         />
                     </div>
@@ -44,38 +44,27 @@ const NewsCard = ({ news, isNewsSaved, toggleBookmark, newsDetail }) => {
     )
 }
 
-const CategoryNews = ({ news, isNewsSaved, toggleBookmark, maxNews, newsDetail }) => {
+const SavedNewsSection = ({ news, unsave, maxNews, newsDetail }) => {
     return(
         <div className="my-10 flex flex-col gap-6">
             {news.slice(0, maxNews).map((news, index) => {
                 return <NewsCard
                     news={news}
                     key={index}
-                    isNewsSaved = {isNewsSaved}
-                    toggleBookmark = {toggleBookmark}
+                    unsave={unsave}
                     newsDetail={newsDetail}/>
             })}
         </div>
     )
 }
 
-function CategoricalNews() {
+function SavedNews() {
     const navigate = useNavigate();
-    const { category } = useParams();
-    const [savedCategorical, setSavedCategories] = useState(politicsCategorySaved);
+    const [savedNews, setSavedNews] = useState(SavedNewsSample)
     const [maxNews, setMaxNews] = useState(10)
 
-    const isNewsSaved = (newsid) => {
-        return savedCategorical.includes(newsid)
-    }
-
-    const toggleBookmark = (newsid) => {
-        if(isNewsSaved(newsid)){
-            setSavedCategories(savedCategorical.filter(id => id !== newsid));
-        }
-        else{
-            setSavedCategories([...savedCategorical, newsid]);
-        }
+    const unsave = (newsid) => {
+        setSavedNews(savedNews.filter(news => news.newsid !== newsid));
     }
 
     const extentPage = () => {
@@ -94,8 +83,8 @@ function CategoricalNews() {
         navigate(`/news/${newsid}`)
     }
 
-    const handleLogin = () => {
-        navigate("/login")
+    const handleDashboard = () => {
+        navigate("/dashboard")
     }
 
     return(
@@ -112,34 +101,46 @@ function CategoricalNews() {
                     <p onClick={() => handleCategoryClick("Sains")}>Sains</p>
                     <p onClick={() => handleCategoryClick("All")}>Semua Berita</p>
                 </div>
-                <button
-                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
-                    onClick={() => handleLogin()}>Log in</button>
+                <img
+                    src={sampleUser.user_pp}
+                    alt="user_pp"
+                    className="w-12 h-12 rounded-full cursor-pointer"
+                    onClick={() => handleDashboard()}/>
             </nav>
             <main className="flex-grow bg-darkgray flex justify-center">
                 <div className="w-320 px-20 pt-10 min-h-screen bg-white">
-                    <h1 className="text-7xl text-sheen font-bold text-center">{category}</h1>
+                    <h1 className="text-7xl text-sheen font-bold text-center">Berita Tersimpan</h1>
                     <div className="mt-6 flex justify-center items-center">
-                        <div className="relative w-200 h-12">
+                        <div className="relative w-150 h-12">
                             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} className="text-black" />
                             </div>
                             <textarea
-                                className="w-full h-full px-8 text-base rounded-lg border border-black resize-none outline-none flex items-center leading-12 pt-0 pb-0 overflow-hidden"
+                                className="w-full h-full px-8 text-base rounded-lg border-2 border-black resize-none outline-none flex items-center leading-12 pt-0 pb-0 overflow-hidden"
                                 placeholder="Cari Berita"
                                 style={{ lineHeight: '48px', paddingTop: '0', paddingBottom: '0' }}
                             />
                         </div>
                     </div>
-                    <CategoryNews
-                        news={politicsCategorySample}
-                        isNewsSaved={isNewsSaved}
-                        toggleBookmark={toggleBookmark}
+                    <div className="mt-6 flex flex-row justify-center items-center gap-2">
+                        <p className="text-2xl">Kategori: </p>
+                        <select className="w-60 h-10 p-2 rounded-lg border-2 border-black">
+                            <option>Semua</option>
+                            <option>Politik</option>
+                            <option>Olahraga</option>
+                            <option>Teknologi</option>
+                            <option>Ekonomi</option>
+                            <option>Sains</option>
+                        </select>
+                    </div>
+                    <SavedNewsSection
+                        news={savedNews}
                         maxNews={maxNews}
+                        unsave={unsave}
                         newsDetail={handleNewsDetail}/>
-                    {maxNews < politicsCategorySample.length ? (
+                    {maxNews < savedNews.length ? (
                         <button
-                            className="mb-10 w-280 h-16 rounded-l-2xl text-4xl font-bold border-black border-2 cursor-pointer"
+                            className="mb-10 w-280 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
                     ) : (<div className="mb-0"></div>)}
                 </div>
@@ -153,4 +154,4 @@ function CategoricalNews() {
     )
 }
 
-export default CategoricalNews;
+export default SavedNews;
