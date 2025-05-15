@@ -8,6 +8,8 @@ import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
 import Dashboard from './components/Dashboard.jsx'
 import SavedNews from './components/SavedNews.jsx';
+import NewsManagement from './components/NewsManagement.jsx'
+import CreateNews from './components/CreateNews.jsx'
 import './index.css';
 
 const router = createBrowserRouter([
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
     {
         path: "/saved",
         element: <SavedNews />
+    },
+    {
+        path: "/manage",
+        element: <NewsManagement />
+    },
+    {
+        path: "/create",
+        element: <CreateNews />
     }
 ]);
 

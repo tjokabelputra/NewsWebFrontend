@@ -1,90 +1,79 @@
 import React, {useState} from 'react';
 import { useNavigate } from "react-router-dom";
-import {politicsCategorySample, sampleUser} from "../newsData.js";
-import { SavedNewsSample } from "../newsData.js";
+import { sampleUser, managedNewsSample } from "../newsData.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookmark as faBookmarkSolid, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 
-const NewsCard = ({ news, unsave, newsDetail }) => {
+const NewsCard = ({ news, deleteNews }) => {
     return(
         <div className="flex flex-row gap-6">
-            <div className="w-60 h-36 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
+            <div className="w-60 h-36 flex-shrink-0 overflow-hidden rounded-lg">
                 <img
                     src={news.banner_url}
                     alt="banner"
                     className="w-full h-full object-cover cursor-pointer"
-                    onClick={() => newsDetail(news.newsid)}
                 />
             </div>
-            <div className="flex flex-col justify-between">
-                <p
-                    className="text-2xl font-bold cursor-pointer"
-                    onClick={() => newsDetail(news.newsid)}>{news.title}</p>
-                <p
-                    className="text-base cursor-pointer"
-                    onClick={() => newsDetail(news.newsid)}>{news.summary}</p>
-                <div className="flex flex-row justify-between">
-                    <div
-                        className="flex flex-row text-xl gap-2 cursor-pointer"
-                        onClick={() => newsDetail(news.newsid)}>
+            <div className="flex flex-row justify-between w-full items-center">
+                <div className="flex flex-col justify-between">
+                    <p className="text-2xl font-bold">{news.title}</p>
+                    <p className="text-base">{news.summary}</p>
+                    <div className="flex flex-row text-xl gap-2">
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {news.created_at}</p>
                     </div>
-                    <div
-                        className="flex items-center justify-center h-[26px] cursor-pointer"
-                        onClick={() => unsave(news.newsid)}>
-                        <FontAwesomeIcon
-                            icon={faBookmarkSolid}
-                            style={{ width: "20px", height: "26px" }}
-                        />
-                    </div>
+                </div>
+                <div className="w-30 h-10 flex-shrink-0">
+                    <button
+                        className="w-full h-full bg-red text-white rounded-xl text-xl font-bold cursor-pointer"
+                        onClick={() => deleteNews(news.newsid)}>
+                        Hapus
+                    </button>
                 </div>
             </div>
         </div>
     )
 }
 
-const SavedNewsSection = ({ news, unsave, maxNews, newsDetail }) => {
+const NewsManagementSection = ({ news, maxNews, deleteNews }) => {
     return(
         <div className="my-10 flex flex-col gap-6">
             {news.slice(0, maxNews).map((news, index) => {
                 return <NewsCard
                     news={news}
                     key={index}
-                    unsave={unsave}
-                    newsDetail={newsDetail}/>
+                    deleteNews={deleteNews}
+                />
             })}
         </div>
     )
 }
 
-function SavedNews() {
+function NewsManagement() {
     const navigate = useNavigate();
-    const [savedNews, setSavedNews] = useState(SavedNewsSample)
-    const [filteredNews, setFilteredNews] = useState(savedNews)
+    const [managedNews, setManagedNews] = useState(managedNewsSample)
+    const [filteredNews, setFilteredNews] = useState(managedNews)
     const [searchKeyword, setSearchKeyword] = useState("");
     const [maxNews, setMaxNews] = useState(10)
 
-    const unsave = (newsid) => {
-        setSavedNews(savedNews.filter(news => news.newsid !== newsid));
+    const deleteNews = (newsid) => {
+        setManagedNews(managedNews.filter(news => news.newsid !== newsid));
         setFilteredNews(filteredNews.filter(news => news.newsid !== newsid));
     }
 
     const filter = (category) => {
-        if(category === "Semua"){
-            setFilteredNews(savedNews);
-        }
-        else{
-            setFilteredNews(savedNews.filter(news => news.category === category));
+        if (category === "Semua") {
+            setFilteredNews(managedNews);
+        } else {
+            setFilteredNews(managedNews.filter(news => news.category === category));
         }
     }
 
-    const search = (keyword) => {
-        if(keyword === ""){
-            setFilteredNews(savedNews);
-        }
-        else{
-            setFilteredNews(savedNews.filter(news => news.title.includes(keyword) || news.summary.includes(keyword)));
+    const search = () => {
+        if (searchKeyword === "") {
+            setFilteredNews(managedNews);
+        } else {
+            setFilteredNews(managedNews.filter(news => news.title.includes(searchKeyword) || news.summary.includes(searchKeyword)));
         }
     }
 
@@ -96,16 +85,12 @@ function SavedNews() {
         navigate("/home")
     }
 
-    const handleCategoryClick = (category) => {
-        navigate(`/category/${category}`)
-    }
-
-    const handleNewsDetail = (newsid) => {
-        navigate(`/news/${newsid}`)
-    }
-
     const handleDashboard = () => {
         navigate("/dashboard")
+    }
+
+    const handleCreateNews = () => {
+        navigate("/create")
     }
 
     return(
@@ -114,23 +99,15 @@ function SavedNews() {
                 <p
                     className="text-4xl text-white font-bold cursor-pointer"
                     onClick={() => handleHome()}>NewsWeb</p>
-                <div className="flex flex-row justify-center p-2 text-2xl gap-4 text-white font-bold cursor-pointer">
-                    <p onClick={() => handleCategoryClick("Politik")}>Politik</p>
-                    <p onClick={() => handleCategoryClick("Olahraga")}>Olahraga</p>
-                    <p onClick={() => handleCategoryClick("Teknologi")}>Teknologi</p>
-                    <p onClick={() => handleCategoryClick("Ekonomi")}>Ekonomi</p>
-                    <p onClick={() => handleCategoryClick("Sains")}>Sains</p>
-                    <p onClick={() => handleCategoryClick("All")}>Semua Berita</p>
-                </div>
                 <img
                     src={sampleUser.user_pp}
                     alt="user_pp"
                     className="w-12 h-12 rounded-full cursor-pointer"
                     onClick={() => handleDashboard()}/>
             </nav>
-            <main className="flex-grow bg-darkgray flex justify-center">
+            <main className="flex-grow min-h-screen bg-darkgray flex justify-center items-center">
                 <div className="w-320 px-20 pt-10 min-h-screen bg-white">
-                    <h1 className="text-7xl text-sheen font-bold text-center">Berita Tersimpan</h1>
+                    <h1 className="text-7xl text-sheen font-bold text-center">Manajemen Berita</h1>
                     <div className="mt-6 flex justify-center items-center">
                         <div className="relative w-150 h-12">
                             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
@@ -152,8 +129,9 @@ function SavedNews() {
                     </div>
                     <div className="mt-6 flex flex-row justify-center items-center gap-2">
                         <p className="text-2xl">Kategori: </p>
-                        <select className="w-60 h-10 p-2 rounded-lg border-2 border-black"
-                        onChange={(e) => filter(e.target.value)}>
+                        <select
+                            className="w-60 h-10 p-2 rounded-lg border-2 border-black"
+                            onChange={(e) => filter(e.target.value)}>
                             <option>Semua</option>
                             <option>Politik</option>
                             <option>Olahraga</option>
@@ -162,16 +140,18 @@ function SavedNews() {
                             <option>Sains</option>
                         </select>
                     </div>
-                    <SavedNewsSection
+                    <NewsManagementSection
                         news={filteredNews}
                         maxNews={maxNews}
-                        unsave={unsave}
-                        newsDetail={handleNewsDetail}/>
-                    {maxNews < savedNews.length ? (
+                        deleteNews={deleteNews}/>
+                    {maxNews < managedNews.length ? (
                         <button
                             className="mb-10 w-280 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
                     ) : null}
+                    <button
+                        className="mb-10 w-280 h-16 rounded-xl bg-sheen text-white text-5xl font-bold cursor-pointer"
+                        onClick={() => handleCreateNews()}>Tambah Berita</button>
                 </div>
             </main>
             <footer className="p-12 gap-4 bg-darkgray text-white flex flex-col">
@@ -183,4 +163,4 @@ function SavedNews() {
     )
 }
 
-export default SavedNews;
+export default NewsManagement;

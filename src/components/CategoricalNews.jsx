@@ -141,7 +141,7 @@ function CategoricalNews() {
                         <button
                             className="mb-10 w-280 h-16 rounded-l-2xl text-4xl font-bold border-black border-2 cursor-pointer"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
-                    ) : (<div className="mb-0"></div>)}
+                    ) : null}
                 </div>
             </main>
             <footer className="p-12 gap-4 bg-darkgray text-white flex flex-col">

@@ -21,6 +21,10 @@ function Dashboard() {
         navigate("/saved")
     }
 
+    const handleNewsManagement = () => {
+        navigate("/manage")
+    }
+
     return(
         <div className="font-inter">
             <nav className="h-18 px-10 bg-darkgray flex flex-row justify-between items-center">
@@ -50,6 +54,11 @@ function Dashboard() {
                             <button
                                 className="w-100 h-12 bg-sheen text-white text-2xl font-bold rounded-2xl cursor-pointer"
                                 onClick={() => handleSavedNews()}>Berita Tersimpan</button>
+                            {sampleUser.role === "Admin" ? (
+                                <button
+                                    className="w-100 h-12 bg-sheen text-white text-2xl font-bold rounded-2xl cursor-pointer"
+                                    onClick={() => handleNewsManagement()}>Manajemen Berita</button>
+                            ) : null}
                             <button
                                 className="w-100 h-12 bg-red text-white text-2xl font-bold rounded-2xl cursor-pointer"
                                 onClick={() => handleLogin()}>Keluar Akun</button>
