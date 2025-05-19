@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../Utils.js";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { jwtDecode } from "jwt-decode"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark as faBookmarkRegular } from '@fortawesome/free-regular-svg-icons'
 import { faBookmark as faBookmarkSolid, faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -21,6 +22,8 @@ const LoadingSpinner = () => {
 
 {/* The First Top News */}
 const FirstTopNews = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
+    if(!news) return null
+
     return(
         <div className="flex flex-col max-w-160 cursor-pointer">
             <img src={news.banner_url} alt="banner"
@@ -53,6 +56,8 @@ const FirstTopNews = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
 
 {/* Second and Third Top News */}
 const RestTopNews = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
+    if(!news) return null
+
     return(
         <div className="flex flex-row items-center justify-between cursor-pointer">
             <div className="w-140 flex flex-col gap-4 mr-4">
@@ -85,6 +90,8 @@ const RestTopNews = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
 
 {/* Grouped Second and Third News */}
 const RestTopNewsSection = ({ secondNews, thirdNews, onToggleBookmarked, isLiked, newsDetail }) => {
+    if(!secondNews || !thirdNews) return null
+
     return(
         <div className="flex flex-col gap-4">
             < RestTopNews
@@ -103,6 +110,8 @@ const RestTopNewsSection = ({ secondNews, thirdNews, onToggleBookmarked, isLiked
 
 {/* Grouped Top News */}
 const TopNewsSection = ({ newsItems, onToggleBookmark, isLiked, newsDetail }) => {
+    if(!newsItems || newsItems.length < 3) return null
+
     return(
         <div className="flex flex-row justify-between">
             <FirstTopNews
@@ -121,6 +130,8 @@ const TopNewsSection = ({ newsItems, onToggleBookmark, isLiked, newsDetail }) =>
 }
 
 const LatestNewsCard = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
+    if(!news) return null
+
     return(
         <div className="flex flex-col max-w-105 gap-4">
             <img
@@ -152,6 +163,8 @@ const LatestNewsCard = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
 }
 
 const LatestNewsSection = ({ newsItems, onToggleBookmark, isLiked, newsDetail }) => {
+    if(!newsItems || newsItems.length === 0) return null
+
     return(
         <div className="mt-16 mb-16">
             <h2 className="text-5xl font-bold">Latest News</h2>
@@ -170,6 +183,8 @@ const LatestNewsSection = ({ newsItems, onToggleBookmark, isLiked, newsDetail })
 }
 
 const CategoryNewsCard = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
+    if(!news) return null
+
     return (
         <div className="flex flex-col max-w-105 gap-2">
             <img src={news.banner_url} alt="banner"
@@ -205,6 +220,8 @@ const CategoryNewsCard = ({ news, onToggleBookmark, isLiked, newsDetail }) => {
 }
 
 const CategorySection = ({ title, newsItems, onToggleBookmark, isLiked, newsDetail }) => {
+    if(!newsItems || newsItems.length === 0) return null
+
     return(
         <div className="mt-6">
             <h2 className="text-5xl font-bold">{title}</h2>
@@ -224,6 +241,7 @@ const CategorySection = ({ title, newsItems, onToggleBookmark, isLiked, newsDeta
 
 function Home() {
     const navigate = useNavigate()
+    const [accountDetail, setAccountDetail] = useState({ uid: "", token: "", profile_pic: "" })
     const [topNews, setTopNews] = useState([])
     const [latestNews, setLatestNews] = useState([])
     const [politicsNews, setPoliticsNews] = useState([])
@@ -233,15 +251,13 @@ function Home() {
     const [scienceNews, setScienceNews] = useState([])
     const [likedNews, setLikedNews] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const uid = "a24c76a0-4f8a-4a85-8ef0-bbdcaa28c6bf"
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxNzZhODQ2OC0wN2M2LTQ5MmQtOGJjOS01ZjlhNDA5ZTk0MTUiLCJ1c2VybmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsInByb2ZpbGVfcGljIjoiaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL25ld3N3ZWItZWY1YmYtZGV2L1Byb2ZpbGUgUGljdHVyZS8xNzZhODQ2OC0wN2M2LTQ5MmQtOGJjOS01ZjlhNDA5ZTk0MTVfMTc0NjE5NzY4NDk3NyIsImlhdCI6MTc0NzI5MTAzNCwiZXhwIjoxNzQ3Mzc3NDM0fQ.nVWfMVhHN_I7UasbGvCtzlksS214E_vxJTFbe9ozfQY"
 
     const isNewsLiked = (newsid) => {
         return likedNews.includes(newsid)
     }
 
     const toggleBookmark = (newsid) => {
-        if(uid === ""){
+        if(accountDetail.uid === ""){
             toast.warning('Anda harus login terlebih dahulu', {
                 position: "top-center",
                 autoClose: 1000,
@@ -257,7 +273,7 @@ function Home() {
         }
 
         if(isNewsLiked(newsid)){
-            unsaveNews(token, uid, newsid)
+            unsaveNews(accountDetail.token, accountDetail.uid, newsid)
                 .then(() => {
                     toast.dismiss()
                     toast.info('Berita Dihapus Dari Favorit', {
@@ -283,13 +299,13 @@ function Home() {
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
-                        theme: "colored",
+                        theme: "dark",
                         transition: Bounce,
                     })
                 })
         }
         else {
-            saveNews(token, uid, newsid)
+            saveNews(accountDetail.token, accountDetail.uid, newsid)
                 .then(() => {
                     toast.dismiss()
                     toast.info('Berita Disimpan', {
@@ -322,25 +338,92 @@ function Home() {
         }
     }
 
-    useEffect(() => {
+    const validateToken = () => {
         setIsLoading(true)
+        const token = localStorage.getItem("jwt")
+        if(!token){
+            setAccountDetail({uid: "", token: "", profile_pic: ""})
+            fetchNews("")
+            return false
+        }
+
+        try{
+            const decode = jwtDecode(token)
+            const currentTime = Date.now() / 1000
+            if(decode.exp < currentTime){
+                toast.error("Session Expired", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                    onClose: () => {
+                        localStorage.removeItem("jwt")
+                        navigate("/login")
+                    }
+                })
+                return false
+            }
+            setAccountDetail({
+                uid: decode.uid || "",
+                profile_pic: decode.profile_pic || "",
+                token: token
+            })
+            fetchNews(decode.uid)
+        }
+        catch (error){
+            toast.error("Invalid Token", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            })
+            localStorage.removeItem("jwt")
+            return false
+        }
+    }
+
+    const fetchNews = (uid) => {
         getHomeNews(uid)
             .then(data => {
-                const politics = data.latestCat.filter(news => news.category === "Politik")
-                const sports = data.latestCat.filter(news => news.category === "Olahraga")
-                const tech = data.latestCat.filter(news => news.category === "Teknologi")
-                const economy = data.latestCat.filter(news => news.category === "Ekonomi")
-                const science = data.latestCat.filter(news => news.category === "Sains")
+                if (data) {
+                    const politics = data.latestCat?.filter(news => news.category === "Politik") || []
+                    const sports = data.latestCat?.filter(news => news.category === "Olahraga") || []
+                    const tech = data.latestCat?.filter(news => news.category === "Teknologi") || []
+                    const economy = data.latestCat?.filter(news => news.category === "Ekonomi") || []
+                    const science = data.latestCat?.filter(news => news.category === "Sains") || []
 
-                console.log(data)
-                setTopNews(data.topNews)
-                setLatestNews(data.latestAll)
-                setPoliticsNews(politics)
-                setSportsNews(sports)
-                setTechNews(tech)
-                setEconomyNews(economy)
-                setScienceNews(science)
-                setLikedNews(data.savedNewsIds)
+                    setTopNews(data.topNews || [])
+                    setLatestNews(data.latestAll || [])
+                    setPoliticsNews(politics)
+                    setSportsNews(sports)
+                    setTechNews(tech)
+                    setEconomyNews(economy)
+                    setScienceNews(science)
+                    setLikedNews(data.savedNewsIds || [])
+                }
+                else {
+                    toast.error("Failed to load news data", {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        transition: Bounce,
+                    })
+                }
                 setIsLoading(false)
             })
             .catch(error => {
@@ -357,7 +440,11 @@ function Home() {
                 })
                 setIsLoading(false)
             })
-    }, [])
+    }
+
+    useEffect(() => {
+        validateToken()
+    }, []);
 
     const handleHome = () => {
         navigate("/home")
@@ -373,6 +460,10 @@ function Home() {
 
     const handleLogin = () => {
         navigate("/login")
+    }
+
+    const handleDashboard = () => {
+        navigate("/dashboard")
     }
 
     return(
@@ -401,9 +492,17 @@ function Home() {
                     <p onClick={() => handleCategoryClick("Sains")}>Sains</p>
                     <p onClick={() => handleCategoryClick("Semua Berita")}>Semua Berita</p>
                 </div>
-                <button
-                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
-                    onClick={() => handleLogin()}>Log in</button>
+                {accountDetail.uid === "" ? (
+                    <button
+                        className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
+                        onClick={() => handleLogin()}>Log in</button>
+                    ) : (
+                    <img
+                        src={accountDetail.profile_pic}
+                        alt="user_pp"
+                        className="w-12 h-12 rounded-full cursor-pointer"
+                        onClick={() => handleDashboard()}/>
+                )}
             </nav>
             <main className="mt-16 px-12">
                 {isLoading ? (

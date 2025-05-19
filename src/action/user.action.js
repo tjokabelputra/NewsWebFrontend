@@ -1,5 +1,5 @@
 export const createAccount = (username, email, password) => {
-    fetch('http://localhost:3000/user/signup', {
+    return fetch('http://localhost:3000/user/signup', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -23,7 +23,7 @@ export const createAccount = (username, email, password) => {
 }
 
 export const loginAccount = (email, password) => {
-    fetch('http://localhost:3000/user/login', {
+    return fetch('http://localhost:3000/user/login', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -47,7 +47,7 @@ export const updateProfilePicture = (uid, profilePicture) => {
     const formData = new FormData()
     formData.append('profilePicture', profilePicture)
 
-    fetch(`https://localhost:3000/user/changeProfilePicture/${uid}`, {
+    return fetch(`https://localhost:3000/user/changeProfilePicture/${uid}`, {
         method: 'PUT',
         body: formData
     })

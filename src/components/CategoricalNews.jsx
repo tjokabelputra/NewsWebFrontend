@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons";
 import { faMagnifyingGlass, faBookmark as faBookmarkSolid, faSpinner} from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import {jwtDecode} from "jwt-decode";
 
 const LoadingSpinner = () => {
     return(
@@ -76,21 +77,21 @@ const CategoryNews = ({ news, isNewsSaved, toggleBookmark, maxNews, newsDetail }
 function CategoricalNews() {
     const navigate = useNavigate();
     const { category } = useParams();
+    const [accountDetail, setAccountDetail] = useState({uid:"", profile_pic:"", token:""})
+    const [currentCategory, setCurrentCategory] = useState("")
     const [searchKeyword, setSearchKeyword] = useState("")
     const [finalKeyword, setFinalKeyword] = useState("")
     const [categoryNews, setCategoryNews] = useState([])
     const [savedCategorical, setSavedCategories] = useState()
     const [maxNews, setMaxNews] = useState(10)
     const [isLoading, setIsLoading] = useState(true)
-    const uid = "a24c76a0-4f8a-4a85-8ef0-bbdcaa28c6bf"
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxNzZhODQ2OC0wN2M2LTQ5MmQtOGJjOS01ZjlhNDA5ZTk0MTUiLCJ1c2VybmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsInByb2ZpbGVfcGljIjoiaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL25ld3N3ZWItZWY1YmYtZGV2L1Byb2ZpbGUgUGljdHVyZS8xNzZhODQ2OC0wN2M2LTQ5MmQtOGJjOS01ZjlhNDA5ZTk0MTVfMTc0NjE5NzY4NDk3NyIsImlhdCI6MTc0NzI5MTAzNCwiZXhwIjoxNzQ3Mzc3NDM0fQ.nVWfMVhHN_I7UasbGvCtzlksS214E_vxJTFbe9ozfQY"
 
     const isNewsSaved = (newsid) => {
         return savedCategorical.includes(newsid)
     }
 
     const toggleBookmark = (newsid) => {
-        if(uid === ""){
+        if(accountDetail.uid === ""){
             toast.warn("Anda harus login terlebih dahulu", {
                 position: "top-center",
                 autoClose: 2000,
@@ -106,7 +107,7 @@ function CategoricalNews() {
         }
 
         if(isNewsSaved(newsid)){
-            unsaveNews(token, uid, newsid)
+            unsaveNews(accountDetail.token, accountDetail.uid, newsid)
                 .then(() => {
                     toast.dismiss()
                     toast.success("Berita berhasil dihapus dari daftar tersimpan", {
@@ -138,7 +139,7 @@ function CategoricalNews() {
                 })
         }
         else{
-            saveNews(token, uid, newsid)
+            saveNews(accountDetail.token, accountDetail.uid, newsid)
                 .then(() => {
                     toast.dismiss()
                     toast.success("Berita berhasil disimpan", {
@@ -175,19 +176,106 @@ function CategoricalNews() {
         setFinalKeyword(searchKeyword)
     }
 
-    useEffect(() => {
+    const validateToken = () => {
+        const token = localStorage.getItem("jwt")
+
+        if(!token){
+            setAccountDetail({uid:"", profile_pic: "", token: ""})
+            return { uid: "" }
+        }
+
+        try {
+            const decode = jwtDecode(token)
+            const currentTime = Date.now() / 1000
+
+            if(decode.exp < currentTime){
+                toast.error("Session Expired", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                    onClose: () => {
+                        localStorage.removeItem("jwt")
+                        navigate("/login")
+                    }
+                })
+                return { uid: "" }
+            }
+
+            setAccountDetail({
+                uid: decode.uid,
+                profile_pic: decode.profile_pic,
+                token: token
+            })
+
+            return { uid: decode.uid }
+        }
+        catch (error) {
+            toast.error("Invalid Token", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            })
+            localStorage.removeItem("jwt")
+            return { uid: "" }
+        }
+    }
+
+    const fetchNews = (categoryName, uid, keyword = "") => {
         setIsLoading(true)
-        getAllNews(category, uid, searchKeyword)
+
+        getAllNews(categoryName, uid, keyword)
             .then(data => {
+                setCurrentCategory(categoryName)
                 setCategoryNews(data.news)
                 setSavedCategories(data.savedNewsIds)
+            })
+            .catch(error => {
+                toast.error(error, {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                })
+            })
+            .finally(() => {
                 setIsLoading(false)
             })
-            .catch(error =>{
-                alert(error)
-                setIsLoading(false)
-            })
-    }, [category, finalKeyword])
+    }
+
+    useEffect(() => {
+        const tokenValidation = validateToken()
+        fetchNews(category, tokenValidation.uid, "")
+    }, []);
+
+    useEffect(() => {
+        if (currentCategory === "") return;
+
+        if (category !== currentCategory) {
+            setSearchKeyword("")
+            setFinalKeyword("")
+            fetchNews(category, accountDetail.uid, "")
+            return
+        }
+
+        fetchNews(category, accountDetail.uid, finalKeyword)
+    }, [category, finalKeyword]);
 
     const extentPage = () => {
         setMaxNews(maxNews + 10)
@@ -207,6 +295,10 @@ function CategoricalNews() {
 
     const handleLogin = () => {
         navigate("/login")
+    }
+
+    const handleDashboard = () => {
+        navigate("/dashboard")
     }
 
     return(
@@ -236,9 +328,17 @@ function CategoricalNews() {
                     <p onClick={() => handleCategoryClick("Sains")}>Sains</p>
                     <p onClick={() => handleCategoryClick("Semua Berita")}>Semua Berita</p>
                 </div>
-                <button
-                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
-                    onClick={() => handleLogin()}>Log in</button>
+                {accountDetail.uid === "" ? (
+                    <button
+                        className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
+                        onClick={() => handleLogin()}>Log in</button>
+                ) : (
+                    <img
+                        src={accountDetail.profile_pic}
+                        alt="user_pp"
+                        className="w-12 h-12 rounded-full cursor-pointer"
+                        onClick={() => handleDashboard()}/>
+                )}
             </nav>
             <main className="flex-grow bg-darkgray flex justify-center">
                 <div className="w-320 px-20 pt-10 min-h-screen bg-white">

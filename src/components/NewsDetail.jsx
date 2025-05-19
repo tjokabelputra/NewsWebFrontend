@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDetailNews, updateNewsLike } from "../action/news.action.js";
+import { getDetailNews, updateNewsLike, updateNewsViews } from "../action/news.action.js";
 import { postComment, getNewsComment, updateCommentLike, deleteComment } from "../action/comment.action.js";
 import { formatDate, getRecentTime } from "../Utils.js";
 import { faThumbsUp as faThumbsUpRegular, faThumbsDown as faThumbsDownRegular } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as faThumbsUpSolid, faThumbsDown as faThumbsDownSolid, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ToastContainer, toast, Bounce} from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 const LoadingSpinner = () => {
     return(
@@ -91,6 +92,7 @@ const CommentsSection = ({ comments, uid, commentLikes, onToggleLike, deleteComm
 function NewsDetail(){
     const navigate = useNavigate()
     const shareUrl = window.location.href;
+    const [accountDetail, setAccountDetail] = useState({uid: "", token: "", profile_pic: ""})
     const [newsDetail, setNewsDetail] = useState({})
     const [likeStatus, setLikeStatus] = useState(null)
     const [tempLike, setTempLike] = useState(0)
@@ -98,18 +100,41 @@ function NewsDetail(){
     const [comments, setComments] = useState([])
     const [commentLikes, setCommentLikes] = useState([])
     const [commentSort, setCommentSort] = useState("Newest")
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+    const [viewTimerComplete, setViewTimerComplete] = useState(true)
     const maxCharacters = 1000
-    const uid = "a24c76a0-4f8a-4a85-8ef0-bbdcaa28c6bf"
     const { newsid: newsid } = useParams()
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxNzZhODQ2OC0wN2M2LTQ5MmQtOGJjOS01ZjlhNDA5ZTk0MTUiLCJ1c2VybmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsInByb2ZpbGVfcGljIjoiaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL25ld3N3ZWItZWY1YmYtZGV2L1Byb2ZpbGUgUGljdHVyZS8xNzZhODQ2OC0wN2M2LTQ5MmQtOGJjOS01ZjlhNDA5ZTk0MTVfMTc0NjE5NzY4NDk3NyIsImlhdCI6MTc0NzI5MTAzNCwiZXhwIjoxNzQ3Mzc3NDM0fQ.nVWfMVhHN_I7UasbGvCtzlksS214E_vxJTFbe9ozfQY"
+
+    const handleNewsViews = () => {
+        updateNewsViews(newsid)
+            .then(() => {
+                console.log("News views updated")
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+    }
 
     const isNewsRate = (like_status) => {
         return like_status != null;
     }
 
     const handleNewsLike = (pressed) => {
-        updateNewsLike(token, uid, newsid, pressed)
+        if(accountDetail.uid === ""){
+            toast.warning("Anda harus login terlebih dahulu!", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            return false
+        }
+
+        updateNewsLike(accountDetail.token, accountDetail.uid, newsid, pressed)
         .then(() => {
             toggleLike(pressed)
         })
@@ -176,11 +201,25 @@ function NewsDetail(){
     }
 
     const handleCreateComment = () => {
-        postComment(token, uid, newsid, commentText)
+        if(accountDetail.uid === ""){
+            toast.warning("Anda harus login terlebih dahulu!", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            return
+        }
+
+        postComment(accountDetail.token, accountDetail.uid, newsid, commentText)
             .then(data => {
                 toast.success('Komentar berhasil ditambahkan!', {
                     position: "top-center",
-                    autoClose: 1000,
+                    autoClose: 2000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
@@ -195,7 +234,7 @@ function NewsDetail(){
             .catch(error => {
                 toast.error(error.message, {
                     position: "top-center",
-                    autoClose: 1000,
+                    autoClose: 2000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
@@ -208,7 +247,21 @@ function NewsDetail(){
     }
 
     const commentLikeUpdate = (commentId, pressed) => {
-        updateCommentLike(token, uid, commentId, pressed)
+        if(accountDetail.uid === ""){
+            toast.warning("Anda harus login terlebih dahulu!", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            return false
+        }
+
+        updateCommentLike(accountDetail.token, accountDetail.uid, commentId, pressed)
             .then(() => {
                 toggleCommentLike(commentId, pressed)
             })
@@ -286,11 +339,11 @@ function NewsDetail(){
     };
 
     const handleDeleteComment = (commentId) => {
-        deleteComment(token, commentId)
+        deleteComment(accountDetail.token, commentId)
             .then(() => {
                 toast.success('Komentar berhasil dihapus!', {
                     position: "top-center",
-                    autoClose: 1000,
+                    autoClose: 2000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
@@ -305,7 +358,7 @@ function NewsDetail(){
             .catch(error => {
                 toast(error.message, {
                     position: "top-center",
-                    autoClose: 1000,
+                    autoClose: 2000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
@@ -318,16 +371,79 @@ function NewsDetail(){
     }
 
     useEffect(() => {
-        fetchNewsDetail()
+        if(!isLoading && !viewTimerComplete){
+            const viewTimer = setTimeout(() => {
+                handleNewsViews()
+                setViewTimerComplete(true)
+            }, 30000)
+        }
+    }, [isLoading, viewTimerComplete]);
+
+    useEffect(() => {
+        validateToken()
     }, [])
 
-    const fetchNewsDetail = () => {
+    const validateToken = () => {
+        setIsLoading(true)
+        const token = localStorage.getItem("jwt")
+        if(!token){
+            setAccountDetail({uid: "", token: "", profile_pic: ""})
+            fetchNewsDetail("")
+            return false
+        }
+
+        try {
+            const decode = jwtDecode(token)
+            const currentTime = Date.now() / 1000
+            if(decode.exp < currentTime){
+                toast.error("Session Expired", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                    onClose: () => {
+                        localStorage.removeItem("jwt")
+                        navigate("/login")
+                    }
+                })
+                return false
+            }
+            setAccountDetail({
+                uid: decode.uid,
+                profile_pic: decode.profile_pic,
+                token: token
+            })
+            fetchNewsDetail(decode.uid)
+        }
+        catch (error) {
+            toast.error("Invalid Token", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            })
+            localStorage.removeItem("jwt")
+            return false
+        }
+    }
+
+    const fetchNewsDetail = (uid) => {
         getDetailNews(uid, newsid)
             .then(data => {
                 setNewsDetail(data.detail)
                 setLikeStatus(data.like_status)
                 setTempLike(data.detail.likes)
-                fetchNewsComment()
+                fetchNewsComment(uid)
             })
             .catch(error => {
                 alert(error.message)
@@ -335,7 +451,7 @@ function NewsDetail(){
             })
     }
 
-    const fetchNewsComment = () => {
+    const fetchNewsComment = (uid) => {
         getNewsComment(uid, newsid)
             .then(data => {
                 setComments(data.comments)
@@ -360,11 +476,15 @@ function NewsDetail(){
         navigate("/login")
     }
 
+    const handleDashboard = () => {
+        navigate("/dashboard")
+    }
+
     return (
         <div className="font-inter">
             <ToastContainer
                 position="top-center"
-                autoClose={5000}
+                autoClose={2000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -389,12 +509,17 @@ function NewsDetail(){
                     <p onClick={() => handleCategoryClick("Sains")}>Sains</p>
                     <p onClick={() => handleCategoryClick("Semua Berita")}>Semua Berita</p>
                 </div>
-                <button
-                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
-                    onClick={handleLogin}
-                >
-                    Log in
-                </button>
+                {accountDetail.uid === "" ? (
+                    <button
+                        className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
+                        onClick={() => handleLogin()}>Log in</button>
+                ) : (
+                    <img
+                        src={accountDetail.profile_pic}
+                        alt="user_pp"
+                        className="w-12 h-12 rounded-full cursor-pointer"
+                        onClick={() => handleDashboard()}/>
+                )}
             </nav>
 
             <main className="flex-grow bg-darkgray flex justify-center">
@@ -494,10 +619,13 @@ function NewsDetail(){
 
                             <div className="my-6 text-xl flex flex-col gap-4">
                                 {newsDetail.content
-                                    .split("\n\n")
-                                    .map((paragraph, index) => (
-                                        <p key={index}>{paragraph}</p>
-                                    ))}
+                                    ? newsDetail.content
+                                        .split("\n\n")
+                                        .map((paragraph, index) => (
+                                            <p key={index}>{paragraph}</p>
+                                        ))
+                                    : <p>Loading content...</p>
+                                }
                             </div>
 
                             <div className="mb-6 px-6 py-4 gap-2 flex flex-col rounded-2xl border-black border-1 bg-gray">
@@ -550,7 +678,7 @@ function NewsDetail(){
                                     commentLikes={commentLikes}
                                     onToggleLike={commentLikeUpdate}
                                     deleteComment={handleDeleteComment}
-                                    uid={uid}
+                                    uid={accountDetail.uid}
                                 />
                             </div>
                         </>

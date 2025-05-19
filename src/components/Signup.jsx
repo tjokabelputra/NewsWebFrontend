@@ -1,14 +1,94 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faUser ,faEnvelope, faEye, faEyeSlash, faKey} from "@fortawesome/free-solid-svg-icons";
+import { createAccount } from "../action/user.action.js"
+import { ToastContainer, toast, Bounce } from "react-toastify"
+import { faUser ,faEnvelope, faEye, faEyeSlash, faKey, faSpinner} from "@fortawesome/free-solid-svg-icons";
 import {useNavigate} from "react-router-dom";
+
+const LoadingSpinner = () => {
+    return(
+        <div className="flex flex-col justify-center items-center">
+            <FontAwesomeIcon
+                icon={faSpinner}
+                className="text-sheen text-6xl animate-spin mb-4"
+            />
+            <p className="text-3xl font-bold text-gray-700">Loading...</p>
+        </div>
+    )
+}
 
 function Signup() {
     const navigate = useNavigate();
+    const [usernames, setUsernames] = React.useState("")
+    const [emails, setEmails] = React.useState("")
+    const [passwords, setPasswords] = React.useState("")
     const [showPassword, setShowPassword] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
+    }
+
+    const handleSignUp = () => {
+        if (!usernames || !emails || !passwords) {
+            toast.warning("Masukan Username, Email dan Password Anda!", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            return
+        }
+
+        if(passwords.length < 8){
+            toast.warning("Password minimal 8 karakter!", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            return
+        }
+
+        setIsLoading(true)
+        createAccount(usernames, emails, passwords)
+            .then(() => {
+                setIsLoading(false)
+                toast.success("Akun berhasil dibuat!", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    onClose: () => {
+                        navigate("/login")
+                    }
+                })
+            })
+            .catch(error => {
+                toast.error(error, {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                })
+                setIsLoading(false)
+            })
     }
 
     const handleHome = () => {
@@ -20,7 +100,30 @@ function Signup() {
     }
 
     return(
-        <div className="font-inter">
+        <div className="font-inter flex flex-col h-screen">
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
+            {isLoading && (
+                <>
+                    <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+                    <div className="fixed inset-0 flex opacity-80 items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-lg">
+                            <LoadingSpinner />
+                        </div>
+                    </div>
+                </>
+            )}
             <nav className="h-18 px-10 bg-darkgray flex flex-row justify-between items-center">
                 <p
                     className="text-4xl text-white font-bold cursor-pointer"
@@ -29,7 +132,7 @@ function Signup() {
                     className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
                     onClick={() => handleLogin()}>Log in</button>
             </nav>
-            <main className="flex-grow min-h-screen bg-darkgray flex justify-center items-center">
+            <main className="flex-1 bg-darkgray flex justify-center items-center overflow-auto">
                 <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-4xl font-bold text-center">Daftar</h1>
@@ -44,6 +147,8 @@ function Signup() {
                                     type="email"
                                     className="w-full h-full ml-2 outline-none border-none"
                                     placeholder="Nama"
+                                    onChange={(e) => setUsernames(e.target.value)}
+                                    value={usernames}
                                 />
                             </div>
                         </div>
@@ -55,6 +160,8 @@ function Signup() {
                                     type="email"
                                     className="w-full h-full ml-2 outline-none border-none"
                                     placeholder="Email"
+                                    onChange={(e) => setEmails(e.target.value)}
+                                    value={emails}
                                 />
                             </div>
                         </div>
@@ -66,6 +173,9 @@ function Signup() {
                                     type={showPassword ? "text" : "password"}
                                     className="w-full h-full ml-2 outline-none border-none"
                                     placeholder="Password"
+                                    onChange={(e) => setPasswords(e.target.value)}
+                                    value={passwords}
+                                    minLength={8}
                                 />
                                 <FontAwesomeIcon
                                     icon={showPassword ? faEyeSlash : faEye}
@@ -78,7 +188,7 @@ function Signup() {
                     <div className="flex flex-col justify-between gap-4">
                         <button
                             className="w-100 h-12 bg-sheen rounded-2xl text-white text-2xl font-bold cursor-pointer"
-                            onClick={() => handleLogin()}>Daftar</button>
+                            onClick={() => handleSignUp()}>Daftar</button>
                         <div className="flex flex-row gap-1 justify-center">
                             <p className="text-base">Sudah Memiliki Akun?</p>
                             <p
