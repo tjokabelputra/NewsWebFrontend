@@ -1,4 +1,4 @@
-export const createNews = async (token, uid, title, content, category, banner, image) => {
+export const createNews = async (token, uid, title, content, category, summary, banner, image) => {
     const formData = new FormData()
     formData.append('banner', banner)
     formData.append('image', image)
@@ -6,8 +6,9 @@ export const createNews = async (token, uid, title, content, category, banner, i
     formData.append('title', title)
     formData.append('category', category)
     formData.append('content', content)
+    formData.append('summary', summary)
 
-    fetch('http://localhost:3000/news/create', {
+    return fetch('http://localhost:3000/news/create', {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`},
@@ -193,6 +194,7 @@ export const deleteNews = async (token, newsid) => {
                     throw new Error(error.message)
                 })
             }
+            return response.json()
         })
     .catch(error => {
         throw new Error(error.message)

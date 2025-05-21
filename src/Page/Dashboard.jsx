@@ -117,7 +117,8 @@ function Dashboard() {
             <Navbar
                 uid={accountDetail.uid}
                 profile_pic={accountDetail.profile_pic}
-                useCategory={false}/>
+                useCategory={false}
+                onProfileClick={() => setImageCropper(false)}/>
             <main className="flex-grow min-h-screen bg-darkgray flex justify-center items-center">
                 {isLoading ? (
                     <LoadingSpinner

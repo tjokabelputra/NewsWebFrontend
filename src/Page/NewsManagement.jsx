@@ -1,93 +1,159 @@
-import React, {useState} from 'react';
-import { useNavigate } from "react-router-dom";
-import { sampleUser, managedNewsSample } from "../newsData.js";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
-
-const NewsCard = ({ news, deleteNews }) => {
-    return(
-        <div className="flex flex-row gap-6">
-            <div className="w-60 h-36 flex-shrink-0 overflow-hidden rounded-lg">
-                <img
-                    src={news.banner_url}
-                    alt="banner"
-                    className="w-full h-full object-cover cursor-pointer"
-                />
-            </div>
-            <div className="flex flex-row justify-between w-full items-center">
-                <div className="flex flex-col justify-between">
-                    <p className="text-2xl font-bold">{news.title}</p>
-                    <p className="text-base">{news.summary}</p>
-                    <div className="flex flex-row text-xl gap-2">
-                        <p className="text-sheen font-bold">{news.category}</p>
-                        <p>| {news.created_at}</p>
-                    </div>
-                </div>
-                <div className="w-30 h-10 flex-shrink-0">
-                    <button
-                        className="w-full h-full bg-red text-white rounded-xl text-xl font-bold cursor-pointer"
-                        onClick={() => deleteNews(news.newsid)}>
-                        Hapus
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-const NewsManagementSection = ({ news, maxNews, deleteNews }) => {
-    return(
-        <div className="my-10 flex flex-col gap-6">
-            {news.slice(0, maxNews).map((news, index) => {
-                return <NewsCard
-                    news={news}
-                    key={index}
-                    deleteNews={deleteNews}
-                />
-            })}
-        </div>
-    )
-}
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import NewsManagementSection from "../Component/News Management/NewsManagementSection.jsx"
+import { Bounce, toast, ToastContainer } from "react-toastify"
+import LoadingSpinner from "../Component/LoadingSpinner.jsx"
+import { jwtDecode } from "jwt-decode"
+import { getCreatedNews } from "../action/news.action.js"
+import { deleteNews } from "../action/news.action.js"
+import Footer from "../Component/Footer.jsx"
+import Navbar from "../Component/Navbar.jsx"
 
 function NewsManagement() {
-    const navigate = useNavigate();
-    const [managedNews, setManagedNews] = useState(managedNewsSample)
+    const navigate = useNavigate()
+    const [accountDetail, setAccountDetail] = useState({ uid: "", profile_pic: "", token: "" })
+    const [managedNews, setManagedNews] = useState([])
     const [filteredNews, setFilteredNews] = useState(managedNews)
-    const [searchKeyword, setSearchKeyword] = useState("");
+    const [searchKeyword, setSearchKeyword] = useState("")
     const [maxNews, setMaxNews] = useState(10)
+    const [isLoading, setIsLoading] = useState(true)
 
-    const deleteNews = (newsid) => {
-        setManagedNews(managedNews.filter(news => news.newsid !== newsid));
-        setFilteredNews(filteredNews.filter(news => news.newsid !== newsid));
+    const handleDeleteNews = (newsid) => {
+        setIsLoading(true)
+        deleteNews(accountDetail.token, newsid)
+            .then(() => {
+                toast.success("Berita berhasil dihapus", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
+                setFilteredNews(filteredNews.filter(news => news.newsid !== newsid))
+                setManagedNews(managedNews.filter(news => news.newsid !== newsid))
+                setIsLoading(false)
+            })
+            .catch(error => {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
+                setIsLoading(false)
+            })
     }
 
     const filter = (category) => {
+        setSearchKeyword("")
         if (category === "Semua") {
-            setFilteredNews(managedNews);
-        } else {
-            setFilteredNews(managedNews.filter(news => news.category === category));
+            setFilteredNews(managedNews)
+        }
+        else {
+            setFilteredNews(managedNews.filter(news => news.category === category))
         }
     }
 
     const search = () => {
         if (searchKeyword === "") {
-            setFilteredNews(managedNews);
-        } else {
-            setFilteredNews(managedNews.filter(news => news.title.includes(searchKeyword) || news.summary.includes(searchKeyword)));
+            setFilteredNews(managedNews)
+        }
+        else {
+            setFilteredNews(managedNews.filter(news => news.title.includes(searchKeyword) || news.summary.includes(searchKeyword)))
         }
     }
 
     const extentPage = () => {
-        setMaxNews(maxNews + 10);
+        setMaxNews(maxNews + 10)
     }
 
-    const handleHome = () => {
-        navigate("/home")
+    const validateToken = () => {
+        setIsLoading(true)
+        const token = localStorage.getItem("jwt")
+
+        if (!token) {
+            setAccountDetail({ uid: "", profile_pic: "", token: "" })
+            return false
+        }
+
+        try{
+            const decode = jwtDecode(token)
+            const currentTime = Date.now() / 1000
+
+            if(decode.exp < currentTime){
+                toast.error("Session Expired", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                    onClose: () => {
+                        localStorage.removeItem("jwt")
+                        navigate("/login")
+                    }
+                })
+                setIsLoading(false)
+                return
+            }
+            setAccountDetail({
+                uid: decode.uid,
+                profile_pic: decode.profile_pic,
+                token: token,
+            })
+            fetchManagedNews(token, decode.uid)
+        }
+
+        catch (error) {
+            toast.error("Invalid Token", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            localStorage.removeItem("jwt")
+            return false
+        }
     }
 
-    const handleDashboard = () => {
-        navigate("/dashboard")
+    const fetchManagedNews = (token, uid) => {
+        getCreatedNews(token, uid)
+            .then(data => {
+                setManagedNews(data.createdNews)
+                setFilteredNews(data.createdNews)
+                setIsLoading(false)
+            })
+            .catch(error => {
+                toast.error(error.message,{
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                })
+                setIsLoading(false)
+            })
     }
+
+    useEffect(() => {
+        validateToken()
+    }, [])
 
     const handleCreateNews = () => {
         navigate("/create")
@@ -95,16 +161,34 @@ function NewsManagement() {
 
     return(
         <div className="font-inter">
-            <nav className="h-18 px-10 bg-darkgray flex flex-row justify-between items-center">
-                <p
-                    className="text-4xl text-white font-bold cursor-pointer"
-                    onClick={() => handleHome()}>NewsWeb</p>
-                <img
-                    src={sampleUser.user_pp}
-                    alt="user_pp"
-                    className="w-12 h-12 rounded-full cursor-pointer"
-                    onClick={() => handleDashboard()}/>
-            </nav>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
+            {isLoading && (
+                <>
+                    <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
+                    <div className="fixed inset-0 flex opacity-80 items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-lg">
+                            <LoadingSpinner
+                                message={"Loading News..."}/>
+                        </div>
+                    </div>
+                </>
+            )}
+            <Navbar
+                uid={accountDetail.uid}
+                profile_pic={accountDetail.profile_pic}
+                useCategory={false} />
             <main className="flex-grow min-h-screen bg-darkgray flex justify-center items-center">
                 <div className="w-320 px-20 pt-10 min-h-screen bg-white">
                     <h1 className="text-7xl text-sheen font-bold text-center">Manajemen Berita</h1>
@@ -119,7 +203,7 @@ function NewsManagement() {
                                 onChange={(e) => setSearchKeyword(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter") {
-                                        search(searchKeyword);
+                                        search(searchKeyword)
                                     }
                                 }}
                                 className="w-full h-full px-8 text-base rounded-lg border-2 border-black outline-none leading-12"
@@ -143,24 +227,22 @@ function NewsManagement() {
                     <NewsManagementSection
                         news={filteredNews}
                         maxNews={maxNews}
-                        deleteNews={deleteNews}/>
-                    {maxNews < managedNews.length ? (
+                        deleteNews={handleDeleteNews}/>
+                    {maxNews < filteredNews.length ? (
                         <button
                             className="mb-10 w-280 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
                     ) : null}
-                    <button
-                        className="mb-10 w-280 h-16 rounded-xl bg-sheen text-white text-5xl font-bold cursor-pointer"
-                        onClick={() => handleCreateNews()}>Tambah Berita</button>
+                    {!isLoading && (
+                        <button
+                            className="mb-10 w-280 h-16 rounded-xl bg-sheen text-white text-5xl font-bold cursor-pointer"
+                            onClick={() => handleCreateNews()}>Tambah Berita</button>
+                    )}
                 </div>
             </main>
-            <footer className="p-12 gap-4 bg-darkgray text-white flex flex-col">
-                <p className="text-5xl font-bold">News Web</p>
-                <p className="text-2xl">Cepat, Akurat, dan Terpercaya</p>
-                <p className="text-xs">©2025 News Web</p>
-            </footer>
+            <Footer/>
         </div>
     )
 }
 
-export default NewsManagement;
+export default NewsManagement

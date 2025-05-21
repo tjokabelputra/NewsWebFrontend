@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 
-function Navbar({ uid, profile_pic, useCategory }){
+function Navbar({ uid, profile_pic, useCategory, onProfileClick }){
     const navigate = useNavigate()
 
     const handleHome = () => {
@@ -17,6 +17,9 @@ function Navbar({ uid, profile_pic, useCategory }){
     }
 
     const handleDashboard = () => {
+        if(onProfileClick){
+            onProfileClick()
+        }
         navigate("/dashboard")
     }
 
