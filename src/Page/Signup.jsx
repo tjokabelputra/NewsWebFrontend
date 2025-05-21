@@ -1,21 +1,11 @@
-import React from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React from 'react'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { createAccount } from "../action/user.action.js"
 import { ToastContainer, toast, Bounce } from "react-toastify"
-import { faUser ,faEnvelope, faEye, faEyeSlash, faKey, faSpinner} from "@fortawesome/free-solid-svg-icons";
-import {useNavigate} from "react-router-dom";
-
-const LoadingSpinner = () => {
-    return(
-        <div className="flex flex-col justify-center items-center">
-            <FontAwesomeIcon
-                icon={faSpinner}
-                className="text-sheen text-6xl animate-spin mb-4"
-            />
-            <p className="text-3xl font-bold text-gray-700">Loading...</p>
-        </div>
-    )
-}
+import { faUser ,faEnvelope, faEye, faEyeSlash, faKey } from "@fortawesome/free-solid-svg-icons"
+import { useNavigate } from "react-router-dom"
+import LoadingSpinner from "../Component/LoadingSpinner.jsx"
+import Navbar from "../Component/Navbar.jsx"
 
 function Signup() {
     const navigate = useNavigate();
@@ -91,10 +81,6 @@ function Signup() {
             })
     }
 
-    const handleHome = () => {
-        navigate("/home")
-    }
-
     const handleLogin = () => {
         navigate("/login")
     }
@@ -119,19 +105,16 @@ function Signup() {
                     <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
                     <div className="fixed inset-0 flex opacity-80 items-center justify-center z-50">
                         <div className="bg-white p-6 rounded-lg">
-                            <LoadingSpinner />
+                            <LoadingSpinner
+                                message={"Loading..."}/>
                         </div>
                     </div>
                 </>
             )}
-            <nav className="h-18 px-10 bg-darkgray flex flex-row justify-between items-center">
-                <p
-                    className="text-4xl text-white font-bold cursor-pointer"
-                    onClick={() => handleHome()}>NewsWeb</p>
-                <button
-                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer"
-                    onClick={() => handleLogin()}>Log in</button>
-            </nav>
+            <Navbar
+                uid={""}
+                profile_pic={""}
+                useCategory={false}/>
             <main className="flex-1 bg-darkgray flex justify-center items-center overflow-auto">
                 <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg">
                     <div className="flex flex-col gap-2">

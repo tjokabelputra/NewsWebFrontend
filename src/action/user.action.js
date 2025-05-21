@@ -43,12 +43,15 @@ export const loginAccount = (email, password) => {
         })
 }
 
-export const updateProfilePicture = (uid, profilePicture) => {
+export const updateProfilePicture = (token, uid, profilePicture) => {
     const formData = new FormData()
     formData.append('profilePicture', profilePicture)
 
-    return fetch(`https://localhost:3000/user/changeProfilePicture/${uid}`, {
-        method: 'PUT',
+    return fetch(`http://localhost:3000/user/changeprofpic/${uid}`, {
+        method: 'POST',
+        headers: {
+            "Authorization" : `Bearer ${token}`
+        },
         body: formData
     })
         .then(response => {

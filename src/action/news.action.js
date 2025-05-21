@@ -103,7 +103,7 @@ export const getAllNews = async (category, uid, search) => {
 }
 
 export const getSavedNews = async (token, uid) => {
-    return fetch(`https://localhost:3000/news/saved/${uid}`, {
+    return fetch(`http://localhost:3000/news/saved/${uid}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${token}`
