@@ -19,9 +19,28 @@ function Signup() {
         setShowPassword(!showPassword);
     }
 
+    const isValidEmail = (email) => {
+        const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/
+        return emailRegex.test(email)
+    }
+
     const handleSignUp = () => {
         if (!usernames || !emails || !passwords) {
             toast.warning("Masukan Username, Email dan Password Anda!", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            return
+        }
+
+        if(!isValidEmail(emails)){
+            toast.warning("Format Email Salah", {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,

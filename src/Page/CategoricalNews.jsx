@@ -247,10 +247,10 @@ function CategoricalNews() {
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
             <main className="flex-grow bg-darkgray flex justify-center">
-                <div className="w-320 px-20 pt-10 min-h-screen bg-white">
-                    <h1 className="text-7xl text-sheen font-bold text-center">{category}</h1>
+                <div className="w-320 px-10 py-10 min-h-screen bg-white max-[1281px]:w-240">
+                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl">{category}</h1>
                     <div className="mt-6 flex justify-center items-center">
-                        <div className="relative w-200 h-12">
+                        <div className="relative w-200 h-12 max-[1281px]:w-150">
                             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} className="text-black" />
                             </div>
@@ -275,7 +275,7 @@ function CategoricalNews() {
                         maxNews={maxNews}/>
                     {maxNews < categoryNews.length ? (
                         <button
-                            className="mb-10 w-280 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer"
+                            className="mt-10 w-300 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer max-[1281px]:w-220"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
                     ) : null}
                 </div>

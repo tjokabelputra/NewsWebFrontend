@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getDetailNews, updateNewsLike, updateNewsViews } from "../action/news.action.js"
-import { postComment, getNewsComment, updateCommentLike, deleteComment } from "../action/comment.action.js"
+import { getNewsComment, updateCommentLike, deleteComment } from "../action/comment.action.js"
 import { formatDate } from "../Utils.js"
 import { faThumbsUp as faThumbsUpRegular, faThumbsDown as faThumbsDownRegular } from "@fortawesome/free-regular-svg-icons"
 import { faThumbsUp as faThumbsUpSolid, faThumbsDown as faThumbsDownSolid } from "@fortawesome/free-solid-svg-icons"
@@ -12,6 +12,7 @@ import LoadingSpinner from "../Component/LoadingSpinner.jsx"
 import CommentsSection from "../Component/News Detail/CommentsSection.jsx"
 import Navbar from "../Component/Navbar.jsx"
 import Footer from "../Component/Footer.jsx"
+import CreateComment from "../Component/News Detail/CreateComment.jsx";
 
 function NewsDetail(){
     const navigate = useNavigate()
@@ -20,13 +21,11 @@ function NewsDetail(){
     const [newsDetail, setNewsDetail] = useState({})
     const [likeStatus, setLikeStatus] = useState(null)
     const [tempLike, setTempLike] = useState(0)
-    const [commentText, setCommentText] = useState("")
     const [comments, setComments] = useState([])
     const [commentLikes, setCommentLikes] = useState([])
     const [commentSort, setCommentSort] = useState("Newest")
     const [isLoading, setIsLoading] = useState(false)
     const [viewTimerComplete, setViewTimerComplete] = useState(true)
-    const maxCharacters = 1000
     const { newsid: newsid } = useParams()
 
     const handleNewsViews = () => {
@@ -111,63 +110,6 @@ function NewsDetail(){
             default:
                 break
         }
-    }
-
-    const handleCommentChange = (e) => {
-        const text = e.target.value
-        if (text.length <= maxCharacters) {
-            setCommentText(text)
-        }
-    }
-
-    const getRemainingCharacters = () => {
-        return maxCharacters - commentText.length
-    }
-
-    const handleCreateComment = () => {
-        if(accountDetail.uid === ""){
-            toast.warning("Anda harus login terlebih dahulu!", {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            })
-            return
-        }
-
-        postComment(accountDetail.token, accountDetail.uid, newsid, commentText)
-            .then(data => {
-                toast.success('Komentar berhasil ditambahkan!', {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                    transition: Bounce,
-                })
-                setCommentText("")
-                setComments([data.comment, ...comments])
-            })
-            .catch(error => {
-                toast.error(error.message, {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                    transition: Bounce,
-                })
-            })
     }
 
     const commentLikeUpdate = (commentId, pressed) => {
@@ -392,6 +334,10 @@ function NewsDetail(){
             })
     }
 
+    const addNewComment = (newComment) => {
+        setComments(prevComments => [newComment, ...prevComments])
+    }
+
     return (
         <div className="font-inter">
             <ToastContainer
@@ -422,21 +368,21 @@ function NewsDetail(){
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
             <main className="flex-grow bg-darkgray flex justify-center">
-                <div className="w-320 px-10 pt-10 min-h-screen bg-white">
+                <div className="w-320 px-10 py-10 min-h-screen bg-white max-[1281px]:w-240">
                     <div className="gap-4 flex flex-col">
-                        <h3 className="text-2xl font-bold text-sheen">
+                        <h3 className="text-2xl font-bold text-sheen max-[1281px]:text-xl">
                             {newsDetail.category}
                         </h3>
-                        <h1 className="text-5xl font-bold">{newsDetail.title}</h1>
+                        <h1 className="text-5xl font-bold max-[1281px]:text-4xl">{newsDetail.title}</h1>
                         <div className="flex flex-row items-center gap-2">
                             <img
                                 src={newsDetail.auth_pp}
                                 alt="profile picture"
-                                className="w-10 h-10 rounded-[50%] border-1 border-solid border-black"
+                                className="w-12 h-12 rounded-[50%] border-1 border-solid border-black"
                             />
                             <div className="flex flex-col justify-end">
-                                <p className="text-[18px]">{newsDetail.author}</p>
-                                <p className="text-[18px]">{formatDate(newsDetail.created_date)}</p>
+                                <p className="text-lg">{newsDetail.author}</p>
+                                <p className="text-lg">{formatDate(newsDetail.created_date)}</p>
                             </div>
                         </div>
                         <div className="flex flex-row gap-4">
@@ -479,7 +425,7 @@ function NewsDetail(){
                         <img
                             src={newsDetail.image_url}
                             alt="image"
-                            className="w-240 h-135"
+                            className="w-240 h-135 border-2 border-black rounded-2xl max-[1281px]:w-140 max-[1281px]:h-[315px]"
                         />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -510,7 +456,7 @@ function NewsDetail(){
                         />
                     </div>
 
-                    <div className="my-6 text-xl flex flex-col gap-4">
+                    <div className="my-6 text-2xl flex flex-col gap-4 max-[1281px]:text-xl">
                         {newsDetail.content
                             ? newsDetail.content
                                 .split("\n\n")
@@ -520,28 +466,12 @@ function NewsDetail(){
                             : <p>Loading content...</p>
                         }
                     </div>
-                    <div className="mb-6 px-6 py-4 gap-2 flex flex-col rounded-2xl border-black border-1 bg-gray">
-                        <h2 className="text-3xl font-bold">Komentar</h2>
-                        <div className="h-24 bg-white rounded-lg border-black border-1">
-                            <textarea
-                                className="w-full h-full p-2 resize-none outline-none"
-                                placeholder="Tulis komentar disini..."
-                                value={commentText}
-                                onChange={handleCommentChange}
-                                maxLength={maxCharacters}
-                            />
-                        </div>
-                        <div className="flex flex-row justify-between">
-                            <p>{getRemainingCharacters()} Karakter Tersisa</p>
-                            <button
-                                className="w-28 h-9 rounded-lg bg-sheen text-xl text-white font-bold cursor-pointer"
-                                onClick={() => handleCreateComment()}>
-                                Kirim
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="h-250 mb-10 px-4 py-6 gap-4 flex flex-col rounded-2xl border-black border-1 bg-gray">
+                    <CreateComment
+                        token={accountDetail.token}
+                        uid={accountDetail.uid}
+                        newsid={newsid}
+                        onCommentAdded={addNewComment}/>
+                    <div className="h-250 px-4 py-6 gap-4 flex flex-col rounded-2xl border-black border-1 bg-gray max-[1281px]:h-200">
                         <div className="flex flex-row gap-4">
                             <button
                                 className={`w-26 h-10 rounded-lg ${

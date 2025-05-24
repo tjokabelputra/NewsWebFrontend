@@ -11,8 +11,6 @@ import LoadingSpinner from "../Component/LoadingSpinner.jsx"
 function CreateNews() {
     const navigate = useNavigate()
     const [accountDetail, setAccountDetail] = useState({ uid:"", profile_pic:"" })
-    const [bannerName, setBannerName] = useState("No File Selected")
-    const [imageName, setImageName] = useState("No File Selected")
     const [bannerFile, setBannerFile] = useState(null)
     const [imageFile, setImageFile] = useState(null)
     const [titleText, setTitleText] = useState("")
@@ -224,14 +222,14 @@ function CreateNews() {
                 profile_pic={accountDetail.profile_pic}
                 useCategory={false} />
             <main className="flex-grow min-h-screen bg-darkgray flex justify-center items-center">
-                <div className="w-320 py-10 min-h-screen bg-white">
-                    <h1 className="text-7xl text-sheen font-bold text-center">Tambah Berita</h1>
-                    <div className="py-10 px-20 flex flex-col gap-6">
+                <div className="w-320 py-10 min-h-screen bg-white max-[1281px]:w-240">
+                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl">Tambah Berita</h1>
+                    <div className="py-10 px-20 flex flex-col gap-6 max-[1281px]:px-10">
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Judul</label>
                             <input
                                 type="text"
-                                className="w-280 h-12 px-4 py-2 text-base border-2 border-black rounded-lg outline-none"
+                                className="w-280 h-12 px-4 py-2 text-base border-2 border-black rounded-lg outline-none max-[1281px]:w-220"
                                 placeholder="Judul Berita"
                                 value={titleText}
                                 onChange={handleTitleChange}
@@ -253,7 +251,7 @@ function CreateNews() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Gambar Banner</label>
-                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg">
+                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg max-[1281px]:w-120">
                                 <span className="text-base truncate max-w-[70%]">
                                     {bannerFile ? bannerFile.name : "No File Selected"}
                                 </span>
@@ -270,7 +268,7 @@ function CreateNews() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Gambar Berita</label>
-                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg">
+                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg max-[1281px]:w-120">
                                 <span className="text-base truncate max-w-[70%]">
                                     {imageFile ? imageFile.name : "No File Selected"}
                                 </span>
@@ -288,7 +286,7 @@ function CreateNews() {
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Isi Berita</label>
                             <textarea
-                                className="w-280 h-250 p-4 text-base border-2 border-black rounded-lg outline-none resize-none"
+                                className="w-280 h-250 p-4 text-base border-2 border-black rounded-lg outline-none resize-none max-[1281px]:w-220"
                                 placeholder="Isi Berita"
                                 value={contentText}
                                 onChange={handleContentChange}/>
@@ -296,7 +294,7 @@ function CreateNews() {
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Rangkuman Berita</label>
                             <textarea
-                                className="w-280 h-24 p-4 text-base border-2 border-black rounded-lg outline-none resize-none"
+                                className="w-280 h-24 p-4 text-base border-2 border-black rounded-lg outline-none resize-none max-[1281px]:w-220"
                                 placeholder="Rangkuman Berita"
                                 value={summaryText}
                                 onChange={handleSummaryChange}
@@ -306,7 +304,7 @@ function CreateNews() {
                     </div>
                     <div className="flex justify-center items-center">
                         <button
-                            className="w-280 h-16 rounded-xl bg-sheen text-white text-5xl font-bold cursor-pointer"
+                            className="w-280 h-16 rounded-xl bg-sheen text-white text-5xl font-bold cursor-pointer max-[1281px]:w-220 max-[1281px]:h-14 max-[1281px]:text-4xl"
                             onClick={handleCreateNews}>
                             Tambah Berita
                         </button>

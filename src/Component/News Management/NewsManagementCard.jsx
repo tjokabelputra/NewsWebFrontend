@@ -4,18 +4,18 @@ import { formatDate } from "../../Utils.js"
 function NewsManagementCard({ news, deleteNews }){
     return(
         <div className="flex flex-row gap-6 items-center">
-            <div className="w-60 h-36 flex-shrink-0 overflow-hidden rounded-lg">
+            <div className="w-60 h-35 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg max-[1281px]:w-55 max-[1281px]:h-32">
                 <img
                     src={news.banner_url}
                     alt="banner"
                     className="w-full h-full object-cover cursor-pointer"
                 />
             </div>
-            <div className="gap-6 flex flex-row justify-between w-full items-center">
+            <div className="gap-6 flex flex-row justify-between w-full items-center max-[1281px]:gap-4">
                 <div className="flex flex-col justify-between">
-                    <p className="text-2xl font-bold">{news.title}</p>
-                    <p className="text-base">{news.summary}</p>
-                    <div className="flex flex-row text-xl gap-2">
+                    <p className="text-2xl font-bold max-[1281px]:text-lg">{news.title}</p>
+                    <p className="text-xl max-[1281px]:text-base">{news.summary}</p>
+                    <div className="flex flex-row text-2xl gap-2 max-[1281px]:text-lg">
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {formatDate(news.created_date)}</p>
                     </div>

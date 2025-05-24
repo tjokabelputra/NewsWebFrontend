@@ -246,7 +246,7 @@ function Home() {
                 uid={accountDetail.uid}
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
-            <main className="my-16 px-12 min-h-screen">
+            <main className="py-16 px-12 min-h-screen max-[1281px]:px-10 max-[1281px]:py-12">
                 <TopNewsSection
                     newsItems={topNews}
                     onToggleBookmark={toggleBookmark}

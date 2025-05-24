@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { formatDate } from "../../../Utils.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,16 +8,22 @@ import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-i
 function RestTopNews({ news, onToggleBookmark, isLiked }){
     if(!news) return null
     const navigate = useNavigate()
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const handleNewsDetail = (newsid) => {
         navigate(`/news/${newsid}`)
     }
 
+    const bookmarkIconStyle = {
+        width: windowWidth < 1281 ? '18px' : '20px',
+        height: windowWidth < 1281 ? '24px' : '26px',
+    }
+
     return(
         <div className="flex flex-row items-center justify-between cursor-pointer">
-            <div className="w-140 flex flex-col gap-4 mr-4">
-                <div className="mr-2 flex flex-row justify-between">
-                    <div className="flex flex-row text-xl gap-2 cursor-pointer"
+            <div className="w-140 h-70 flex flex-col justify-around mr-4 max-[1281px]:w-95 max-[1281px]:h-[194px]">
+                <div className="mr-4 flex flex-row justify-between max-[1281px]:mr-2">
+                    <div className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg"
                          onClick={() => handleNewsDetail(news.newsid)}>
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {formatDate(news.created_date)}</p>
@@ -27,17 +33,17 @@ function RestTopNews({ news, onToggleBookmark, isLiked }){
                         onClick={() => onToggleBookmark(news.newsid)}>
                         <FontAwesomeIcon
                             icon={isLiked(news.newsid) ? faBookmarkSolid : faBookmarkRegular}
-                            style={{ width: "20px", height: "26px" }}
+                            style={bookmarkIconStyle}
                         />
                     </div>
                 </div>
-                <p className="text-xl font-bold cursor-pointer"
+                <p className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg"
                    onClick={() => handleNewsDetail(news.newsid)}>{news.title}</p>
-                <p className="text-xl cursor-pointer"
+                <p className="text-2xl cursor-pointer max-[1281px]:text-base"
                    onClick={() => handleNewsDetail(news.newsid)}>{news.summary}</p>
             </div>
             <img src={news.banner_url} alt="banner"
-                 className="w-130 h-70 rounded-xl cursor-pointer"
+                 className="w-130 h-70 rounded-2xl cursor-pointer border-2 border-black max-[1281px]:w-90 max-[1281px]:h-[194px]"
                  onClick={() => handleNewsDetail(news.newsid)}/>
         </div>
     )
