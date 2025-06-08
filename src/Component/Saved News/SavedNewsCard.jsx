@@ -14,13 +14,23 @@ function SavedNewsCard({ news, unsave }){
     }
 
     const bookmarkIconStyle = {
-        width: windowWidth < 1281 ? '18px' : '20px',
-        height: windowWidth < 1281 ? '24px' : '26px',
+        width:
+            windowWidth < 1025
+                ? "15px"
+                : windowWidth < 1281
+                    ? "18px"
+                    : "20px",
+        height:
+            windowWidth < 1025
+                ? "20px"
+                : windowWidth < 1281
+                    ? "24px"
+                    : "26px",
     }
 
     return(
-        <div className="flex flex-row gap-6 items-center">
-            <div className="w-60 h-36 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg bg-gray-200 max-[1281px]:w-55 max-[1281px]:h-32">
+        <div className="flex flex-row gap-6 items-center max-[1025px]:gap-4">
+            <div className="w-60 h-36 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg bg-gray-200 max-[1281px]:w-55 max-[1281px]:h-32 max-[1025px]:w-50 max-[1025px]:h-29">
                 <img
                     src={news.banner_url}
                     alt="banner"
@@ -30,14 +40,14 @@ function SavedNewsCard({ news, unsave }){
             </div>
             <div className="flex flex-col justify-between">
                 <p
-                    className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg"
+                    className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
                     onClick={() => handleNewsDetail(news.newsid)}>{news.title}</p>
                 <p
-                    className="text-xl cursor-pointer max-[1281px]:text-base"
+                    className="text-xl cursor-pointer max-[1281px]:text-base max-[1025px]:text-sm"
                     onClick={() => handleNewsDetail(news.newsid)}>{news.summary}</p>
                 <div className="flex flex-row justify-between">
                     <div
-                        className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg"
+                        className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
                         onClick={() => handleNewsDetail(news.newsid)}>
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {formatDate(news.created_date)}</p>

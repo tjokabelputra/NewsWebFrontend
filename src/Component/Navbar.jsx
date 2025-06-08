@@ -29,7 +29,7 @@ function Navbar({ uid, profile_pic, useCategory, onProfileClick }){
                 className="text-4xl text-white font-bold cursor-pointer max-[1281px]:text-3xl"
                 onClick={() => handleHome()}>NewsWeb</p>
             { useCategory && (
-                <div className="flex flex-row justify-center p-2 text-2xl gap-4 text-white font-bold cursor-pointer max-[1281px]:max-xl">
+                <div className="flex flex-row justify-center p-2 text-2xl gap-4 text-white font-bold cursor-pointer max-[1281px]:text-xl">
                     <p onClick={() => handleCategoryClick("Politik")}>Politik</p>
                     <p onClick={() => handleCategoryClick("Olahraga")}>Olahraga</p>
                     <p onClick={() => handleCategoryClick("Teknologi")}>Teknologi</p>

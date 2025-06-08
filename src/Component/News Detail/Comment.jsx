@@ -14,13 +14,13 @@ function Comment({ comment, uid, commentLikes, onToggleLike, deleteComment }){
     return(
         <div className="p-4 flex flex-col gap-2 bg-white rounded-2xl border-1 border-solid border-black">
             <div className="flex flex-row gap-2 items-center">
-                <img src={comment.commentator_pp} alt="profile picture" className="w-12 h-12 rounded-[50%] border-1 border-solid border-black" />
+                <img src={comment.commentator_pp} alt="profile picture" className="w-12 h-12 rounded-[50%] border-1 border-solid border-black max-[1025px]:w-9 max-[1025px]:h-9" />
                 <div className="flex flex-col justify-between">
-                    <p className="text-base">{comment.username}</p>
-                    <p className="text-base">{getRecentTime(comment.createdat)}</p>
+                    <p className="text-base max-[1025px]:text-sm">{comment.username}</p>
+                    <p className="text-base max-[1025px]:text-sm">{getRecentTime(comment.createdat)}</p>
                 </div>
             </div>
-            <p className="text-lg max-[1281px]:text-base">{comment.comment}</p>
+            <p className="text-lg max-[1281px]:text-base max-[1025px]:text-sm">{comment.comment}</p>
             <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row justify-start gap-4 items-center">
                     <FontAwesomeIcon

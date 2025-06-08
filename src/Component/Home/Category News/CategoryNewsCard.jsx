@@ -15,21 +15,31 @@ function CategoryNewsCard({ news, onToggleBookmark, isLiked }){
     }
 
     const bookmarkIconStyle = {
-        width: windowWidth < 1281 ? '18px' : '20px',
-        height: windowWidth < 1281 ? '24px' : '26px',
+        width:
+            windowWidth < 1025
+                ? "15px"
+                : windowWidth < 1281
+                    ? "18px"
+                    : "20px",
+        height:
+            windowWidth < 1025
+                ? "20px"
+                : windowWidth < 1281
+                    ? "24px"
+                    : "26px",
     }
 
     return (
-        <div className="flex flex-col max-w-105 max-[1281px]:max-w-70">
+        <div className="flex flex-col max-w-105 max-[1281px]:max-w-70 max-[1025px]:max-w-59">
             <img src={news.banner_url} alt="banner"
-                 className="w-105 h-60 rounded-xl border-2 border-black cursor-pointer max-[1281px]:w-70 max-[1281px]:h-40"
+                 className="w-105 h-60 rounded-xl border-2 border-black cursor-pointer max-[1281px]:w-70 max-[1281px]:h-40 max-[1025px]:w-59 max-[1025px]:h-34"
                  onClick={() => handleNewsDetail(news.newsid)}/>
             <div className="mt-4 gap-2 flex flex-col">
-                <div className="gap-4 flex flex-row items-center">
-                    <img src={news.auth_pp} className="w-10 h-10 rounded-[50%] border-[1px] border-solid border-black" alt="profile picture"/>
-                    <p className="text-2xl max-[1281px]:text-lg">{news.username}</p>
+                <div className="gap-4 flex flex-row items-center max-[1025px]:gap-2">
+                    <img src={news.auth_pp} className="w-10 h-10 rounded-[50%] border-[1px] border-solid border-black max-[1025px]:w-8 max-[1025px]:h-8" alt="profile picture"/>
+                    <p className="text-2xl max-[1281px]:text-lg max-[1025px]:text-sm">{news.username}</p>
                 </div>
-                <div className="mt-2 mr-2 text-2xl  flex flex-row justify-between max-[1281px]:text-lg">
+                <div className="mt-2 mr-2 text-2xl  flex flex-row justify-between max-[1281px]:text-lg max-[1025px]:text-base">
                     <div
                         className="flex flex-row gap-2 cursor-pointer"
                         onClick={() => handleNewsDetail(news.newsid)}>
@@ -46,7 +56,7 @@ function CategoryNewsCard({ news, onToggleBookmark, isLiked }){
                     </div>
                 </div>
                 <p
-                    className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg"
+                    className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
                     onClick={() => handleNewsDetail(news.newsid)}>{news.title}</p>
             </div>
         </div>

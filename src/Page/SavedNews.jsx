@@ -185,10 +185,10 @@ function SavedNews() {
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
             <main className="flex-grow bg-darkgray flex justify-center">
-                <div className="w-320 px-10 py-10 min-h-screen bg-white max-[1281px]:w-240">
-                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl">Berita Tersimpan</h1>
-                    <div className="mt-6 flex justify-center items-center">
-                        <div className="relative w-200 h-12 max-[1281px]:w-150">
+                <div className="w-320 p-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6">
+                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl max-[1025px]:text-5xl">Berita Tersimpan</h1>
+                    <div className="mt-6 flex justify-center items-center max-[1025px]:mt-4">
+                        <div className="relative w-200 h-12 max-[1281px]:w-150 max-[1025px]:w-120 max-[1025px]:h-10">
                             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} className="text-black" />
                             </div>
@@ -206,9 +206,9 @@ function SavedNews() {
                             />
                         </div>
                     </div>
-                    <div className="mt-6 flex flex-row justify-center items-center gap-2">
-                        <p className="text-2xl">Kategori: </p>
-                        <select className="w-60 h-10 p-2 rounded-lg border-2 border-black max-[1281px]:w-50"
+                    <div className="mt-6 flex flex-row justify-center items-center gap-2 max-[1025px]:mt-4">
+                        <p className="text-2xl max-[1025px]:text-base">Kategori: </p>
+                        <select className="w-60 h-10 p-2 rounded-lg border-2 border-black max-[1281px]:w-50 max-[1025px]:w-40 max-[1025px]:text-sm"
                                 onChange={(e) => filter(e.target.value)}>
                             <option>Semua</option>
                             <option>Politik</option>
@@ -224,7 +224,7 @@ function SavedNews() {
                         unsave={unsave}/>
                     {maxNews < savedNews.length ? (
                         <button
-                            className="mt-10 w-300 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer max-[1281px]:h-14 max-[1281px]:w-220 max-[1281px]:text-4xl"
+                            className="mt-10 w-300 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer max-[1281px]:h-14 max-[1281px]:w-220 max-[1281px]:text-4xl max-[1025px]:w-204 max-[1025px]:h-12 max-[1025px]:text-3xl max-[1025px]:mt-6"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
                     ) : null}
                 </div>

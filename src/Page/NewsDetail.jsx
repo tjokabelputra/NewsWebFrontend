@@ -368,21 +368,21 @@ function NewsDetail(){
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
             <main className="flex-grow bg-darkgray flex justify-center">
-                <div className="w-320 px-10 py-10 min-h-screen bg-white max-[1281px]:w-240">
-                    <div className="gap-4 flex flex-col">
-                        <h3 className="text-2xl font-bold text-sheen max-[1281px]:text-xl">
+                <div className="w-320 p-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6">
+                    <div className="gap-4 flex flex-col max-[1025px]:gap-2">
+                        <h3 className="text-2xl font-bold text-sheen max-[1281px]:text-xl max-[1025px]:text-base">
                             {newsDetail.category}
                         </h3>
-                        <h1 className="text-5xl font-bold max-[1281px]:text-4xl">{newsDetail.title}</h1>
+                        <h1 className="text-5xl font-bold max-[1281px]:text-4xl max-[1025px]:text-3xl">{newsDetail.title}</h1>
                         <div className="flex flex-row items-center gap-2">
                             <img
                                 src={newsDetail.auth_pp}
                                 alt="profile picture"
-                                className="w-12 h-12 rounded-[50%] border-1 border-solid border-black"
+                                className="w-12 h-12 rounded-[50%] border-1 border-solid border-black max-[1025px]:w-10 max-[1025px]:h-10"
                             />
                             <div className="flex flex-col justify-end">
-                                <p className="text-lg">{newsDetail.author}</p>
-                                <p className="text-lg">{formatDate(newsDetail.created_date)}</p>
+                                <p className="text-lg max-[1025px]:text-sm">{newsDetail.author}</p>
+                                <p className="text-lg max-[1025px]:text-sm">{formatDate(newsDetail.created_date)}</p>
                             </div>
                         </div>
                         <div className="flex flex-row gap-4">
@@ -425,7 +425,7 @@ function NewsDetail(){
                         <img
                             src={newsDetail.image_url}
                             alt="image"
-                            className="w-240 h-135 border-2 border-black rounded-2xl max-[1281px]:w-140 max-[1281px]:h-[315px]"
+                            className="w-240 h-135 border-2 border-black rounded-2xl max-[1281px]:w-160 max-[12815px]:h-90 max-[1025px]:w-140 max-[1025px]:h-[315px]"
                         />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -456,7 +456,7 @@ function NewsDetail(){
                         />
                     </div>
 
-                    <div className="my-6 text-2xl flex flex-col gap-4 max-[1281px]:text-xl">
+                    <div className="my-6 text-2xl flex flex-col gap-4 max-[1281px]:text-xl max-[1025px]:text-base">
                         {newsDetail.content
                             ? newsDetail.content
                                 .split("\n\n")

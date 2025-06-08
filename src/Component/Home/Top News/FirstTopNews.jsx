@@ -15,18 +15,28 @@ function FirstTopNews ({ news, onToggleBookmark, isLiked }) {
     }
 
     const bookmarkIconStyle = {
-        width: windowWidth < 1281 ? '18px' : '20px',
-        height: windowWidth < 1281 ? '24px' : '26px',
+        width:
+            windowWidth < 1025
+                ? "15px"
+                : windowWidth < 1281
+                    ? "18px"
+                    : "20px",
+        height:
+            windowWidth < 1025
+                ? "20px"
+                : windowWidth < 1281
+                    ? "24px"
+                    : "26px",
     }
 
     return(
-        <div className="flex flex-col max-w-160 cursor-pointer max-[1281px]:max-w-90">
+        <div className="flex flex-col max-w-160 cursor-pointer max-[1281px]:max-w-90 max-[1025px]:max-w-80">
             <img src={news.banner_url} alt="banner"
-                 className="w-160 h-[345px] rounded-xl cursor-pointer border-black border-2 max-[1281px]:w-90 max-[1281px]:h-[194px]"
+                 className="w-160 h-[345px] rounded-xl cursor-pointer border-black border-2 max-[1281px]:w-90 max-[1281px]:h-[194px] max-[1025px]:w-80 max-[1025px]:h-43"
                  onClick={() => handleNewsDetail(news.newsid)}/>
             <div className="flex flex-col gap-2 mt-6">
                 <div className="mr-4 flex flex-row justify-between max-[1281px]:mr-2">
-                    <div className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg"
+                    <div className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
                          onClick={() => handleNewsDetail(news.newsid)}>
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {formatDate(news.created_date)}</p>
@@ -40,9 +50,9 @@ function FirstTopNews ({ news, onToggleBookmark, isLiked }) {
                         />
                     </div>
                 </div>
-                <p className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg"
+                <p className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
                    onClick={() => handleNewsDetail(news.newsid)}>{news.title}</p>
-                <p className="text-xl cursor-pointer max-[1281px]:text-base"
+                <p className="text-xl cursor-pointer max-[1281px]:text-base max-[1025px]:text-sm"
                    onClick={() => handleNewsDetail(news.newsid)}>{news.summary}</p>
             </div>
         </div>

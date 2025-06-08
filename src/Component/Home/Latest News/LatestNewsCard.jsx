@@ -15,20 +15,30 @@ function LatestNewsCard({ news, onToggleBookmark, isLiked }){
     }
 
     const bookmarkIconStyle = {
-        width: windowWidth < 1281 ? '18px' : '20px',
-        height: windowWidth < 1281 ? '24px' : '26px',
+        width:
+            windowWidth < 1025
+                ? "15px"
+                : windowWidth < 1281
+                    ? "18px"
+                    : "20px",
+        height:
+            windowWidth < 1025
+                ? "20px"
+                : windowWidth < 1281
+                    ? "24px"
+                    : "26px",
     }
 
     return(
-        <div className="flex flex-col max-w-105 max-[1281px]:max-w-70">
+        <div className="flex flex-col max-w-105 max-[1281px]:max-w-70 max-[1025px]:max-w-59">
             <img
                 src={news.banner_url}
                 alt="banner"
-                className="w-105 h-60 rounded-2xl cursor-pointer border-2 border-black max-[1281px]:w-70 max-[1281px]:h-40"
+                className="w-105 h-60 rounded-2xl cursor-pointer border-2 border-black max-[1281px]:w-70 max-[1281px]:h-40 max-[1025px]:max-w-59 max-[1025px]:max-h-34"
                 onClick={() => handleNewsDetail(news.newsid)}/>
             <div className="mt-4 gap-2 flex flex-col">
                 <div className="mr-2 flex flex-row justify-between">
-                    <div className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg"
+                    <div className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
                          onClick={() => handleNewsDetail(news.newsid)}>
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {formatDate(news.created_date)}</p>
@@ -43,7 +53,7 @@ function LatestNewsCard({ news, onToggleBookmark, isLiked }){
                     </div>
                 </div>
             </div>
-            <p className="mt-2 text-2xl font-bold cursor-pointer max-[1281px]:text-lg"
+            <p className="mt-2 text-2xl font-bold cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
                onClick={() => handleNewsDetail(news.newsid)}>{news.title}</p>
         </div>
     )

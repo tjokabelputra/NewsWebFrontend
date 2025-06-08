@@ -5,9 +5,9 @@ function LatestNewsSection({newsItems, onToggleBookmark, isLiked }){
     if(!newsItems || newsItems.length === 0) return null
 
     return(
-        <div className="my-16 max-[1281px]:my-12 ">
-            <h2 className="text-5xl font-bold max-[1281px]:text-4xl">Latest News</h2>
-            <div className="mt-6 flex flex-row justify-between">
+        <div className="my-16 max-[1281px]:my-12 max-[1025px]:max-10">
+            <h2 className="text-5xl font-bold max-[1281px]:text-4xl max-[1025px]:text-3xl">Latest News</h2>
+            <div className="mt-6 flex flex-row justify-between max-[1025px]:mt-4">
                 {newsItems.map((news) => {
                     return <LatestNewsCard
                         key={news.newsid}
