@@ -16,25 +16,32 @@ function LatestNewsCard({ news, onToggleBookmark, isLiked }){
 
     const bookmarkIconStyle = {
         width:
-            windowWidth < 1025
-                ? "15px"
-                : windowWidth < 1281
-                    ? "18px"
-                    : "20px",
+            windowWidth < 769
+            ? "12px"
+                :windowWidth < 1025
+                    ? "15px"
+                    : windowWidth < 1281
+                        ? "18px"
+                        : "20px",
         height:
-            windowWidth < 1025
-                ? "20px"
-                : windowWidth < 1281
-                    ? "24px"
-                    : "26px",
+            windowWidth < 769
+                ? "16px"
+                :windowWidth < 1025
+                    ? "20px"
+                    : windowWidth < 1281
+                        ? "24px"
+                        : "26px",
     }
 
     return(
-        <div className="flex flex-col max-w-105 max-[1281px]:max-w-70 max-[1025px]:max-w-59">
+        <div className="flex flex-col max-w-105 max-[1281px]:max-w-70 max-[1025px]:max-w-59 max-[769px]:max-w-52">
             <img
                 src={news.banner_url}
                 alt="banner"
-                className="w-105 h-60 rounded-2xl cursor-pointer border-2 border-black max-[1281px]:w-70 max-[1281px]:h-40 max-[1025px]:max-w-59 max-[1025px]:max-h-34"
+                className="w-105 h-60 rounded-2xl cursor-pointer border-2 border-black
+                max-[1281px]:w-70 max-[1281px]:h-40
+                max-[1025px]:max-w-59 max-[1025px]:max-h-34
+                max-[769px]:max-w-52 max-[769px]:max-h-29 max-[769px]:border-1"
                 onClick={() => handleNewsDetail(news.newsid)}/>
             <div className="mt-4 gap-2 flex flex-col">
                 <div className="mr-2 flex flex-row justify-between">

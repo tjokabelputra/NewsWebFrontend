@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import { getRecentTime } from "../../Utils.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faThumbsDown as faThumbsDownSolid, faThumbsUp as faThumbsUpSolid } from "@fortawesome/free-solid-svg-icons"
@@ -6,9 +6,24 @@ import { faThumbsDown as faThumbsDownRegular, faThumbsUp as faThumbsUpRegular } 
 
 function Comment({ comment, uid, commentLikes, onToggleLike, deleteComment }){
     const likeStatus = commentLikes.find(item => item.commentid === comment.commentid)?.like_status || null
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const isCommentRated = (status) => {
         return status !== null;
+    }
+
+    const likeIconStyle = {
+        width: windowWidth < 769 ? "20px" : "24px",
+        height: windowWidth < 769 ? "20px" : "24px",
+        color: likeStatus === "Like" ? "#76ABAE" : "#000000",
+        cursor: "pointer"
+    }
+
+    const dislikeIconStyle = {
+        width: windowWidth < 769 ? "20px" : "24px",
+        height: windowWidth < 769 ? "20px" : "24px",
+        color: likeStatus === "Dislike" ? "#E53935" : "#000000",
+        cursor: "pointer"
     }
 
     return(
@@ -25,29 +40,19 @@ function Comment({ comment, uid, commentLikes, onToggleLike, deleteComment }){
                 <div className="flex flex-row justify-start gap-4 items-center">
                     <FontAwesomeIcon
                         icon={isCommentRated(likeStatus) ? (likeStatus === "Like" ? faThumbsUpSolid : faThumbsUpRegular) : faThumbsUpRegular}
-                        style={{
-                            width: "20px",
-                            height: "20px",
-                            color: likeStatus === "Like" ? "#76ABAE" : "#000000",
-                            cursor: "pointer"
-                        }}
+                        style={likeIconStyle}
                         onClick={() => onToggleLike(comment.commentid, "Like")}
                     />
                     <p className="text-lg">{comment.votes}</p>
                     <FontAwesomeIcon
                         icon={isCommentRated(likeStatus) ? (likeStatus === "Dislike" ? faThumbsDownSolid : faThumbsDownRegular) : faThumbsDownRegular}
-                        style={{
-                            width: "24px",
-                            height: "24px",
-                            color: likeStatus === "Dislike" ? "#E53935" : "#000000",
-                            cursor: "pointer"
-                        }}
+                        style={dislikeIconStyle}
                         onClick={() => onToggleLike(comment.commentid, "Dislike")}
                     />
                 </div>
                 {comment.uid === uid ? (
                     <button
-                        className="w-28 h-9 rounded-lg bg-red text-xl text-white font-bold cursor-pointer"
+                        className="w-28 h-9 rounded-lg bg-red text-xl text-white font-bold cursor-pointer max-[769px]:w-24 max-[769px]:h-8 "
                         onClick={() => deleteComment(comment.commentid)}>Hapus</button>
                 ) : null}
             </div>

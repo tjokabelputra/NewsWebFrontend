@@ -17,6 +17,7 @@ import CreateComment from "../Component/News Detail/CreateComment.jsx";
 function NewsDetail(){
     const navigate = useNavigate()
     const shareUrl = window.location.href
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [accountDetail, setAccountDetail] = useState({uid: "", token: "", profile_pic: ""})
     const [newsDetail, setNewsDetail] = useState({})
     const [likeStatus, setLikeStatus] = useState(null)
@@ -338,6 +339,20 @@ function NewsDetail(){
         setComments(prevComments => [newComment, ...prevComments])
     }
 
+    const likeIconStyle = {
+        width: windowWidth < 769 ? "20px" : "24px",
+        height: windowWidth < 769 ? "20px" : "24px",
+        color: likeStatus === "Like" ? "#76ABAE" : "#000000",
+        cursor: "pointer"
+    }
+
+    const dislikeIconStyle = {
+        width: windowWidth < 769 ? "20px" : "24px",
+        height: windowWidth < 769 ? "20px" : "24px",
+        color: likeStatus === "Dislike" ? "#E53935" : "#000000",
+        cursor: "pointer"
+    }
+
     return (
         <div className="font-inter">
             <ToastContainer
@@ -368,12 +383,13 @@ function NewsDetail(){
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
             <main className="flex-grow bg-darkgray flex justify-center">
-                <div className="w-320 p-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6">
+                <div className="w-320 p-10 min-h-screen bg-white
+                max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6 max-[769px]:w-176 max-[769px]:px-4 max-[769px]:py-6">
                     <div className="gap-4 flex flex-col max-[1025px]:gap-2">
-                        <h3 className="text-2xl font-bold text-sheen max-[1281px]:text-xl max-[1025px]:text-base">
+                        <h3 className="text-2xl font-bold text-sheen max-[1281px]:text-xl max-[1025px]:text-base max-[769px]:text-sm">
                             {newsDetail.category}
                         </h3>
-                        <h1 className="text-5xl font-bold max-[1281px]:text-4xl max-[1025px]:text-3xl">{newsDetail.title}</h1>
+                        <h1 className="text-5xl font-bold max-[1281px]:text-4xl max-[1025px]:text-3xl max-[769px]:text-2xl">{newsDetail.title}</h1>
                         <div className="flex flex-row items-center gap-2">
                             <img
                                 src={newsDetail.auth_pp}
@@ -394,12 +410,7 @@ function NewsDetail(){
                                         : faThumbsUpRegular
                                     : faThumbsUpRegular
                             }
-                                style={{
-                                    width: "24px",
-                                    height: "24px",
-                                    color: likeStatus === "Like" ? "#76ABAE" : "#000000",
-                                    cursor: "pointer",
-                                }}
+                                style={likeIconStyle}
                                 onClick={() => handleNewsLike("Like")}
                             />
                             <p className="text-base">{tempLike}</p>
@@ -411,12 +422,7 @@ function NewsDetail(){
                                         : faThumbsDownRegular
                                     : faThumbsDownRegular
                             }
-                                style={{
-                                    width: "24px",
-                                    height: "24px",
-                                    color: likeStatus === "Dislike" ? "#E53935" : "#000000",
-                                    cursor: "pointer",
-                                }}
+                                style={dislikeIconStyle}
                                 onClick={() => handleNewsLike("Dislike")}
                             />
                         </div>
@@ -425,7 +431,10 @@ function NewsDetail(){
                         <img
                             src={newsDetail.image_url}
                             alt="image"
-                            className="w-240 h-135 border-2 border-black rounded-2xl max-[1281px]:w-160 max-[12815px]:h-90 max-[1025px]:w-140 max-[1025px]:h-[315px]"
+                            className="w-240 h-135 border-2 border-black rounded-2xl
+                            max-[1281px]:w-160 max-[12815px]:h-90
+                            max-[1025px]:w-140 max-[1025px]:h-[315px]
+                            max-[769px]:w-120 max-[769px]:h-[270px] max-[769px]:border-1 max-[769px]:rounded-xl"
                         />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -456,7 +465,7 @@ function NewsDetail(){
                         />
                     </div>
 
-                    <div className="my-6 text-2xl flex flex-col gap-4 max-[1281px]:text-xl max-[1025px]:text-base">
+                    <div className="my-6 text-2xl flex flex-col gap-4 max-[1281px]:text-xl max-[1025px]:text-base max-[769px]:text-sm">
                         {newsDetail.content
                             ? newsDetail.content
                                 .split("\n\n")
@@ -474,7 +483,7 @@ function NewsDetail(){
                     <div className="h-250 px-4 py-6 gap-4 flex flex-col rounded-2xl border-black border-1 bg-gray max-[1281px]:h-200">
                         <div className="flex flex-row gap-4">
                             <button
-                                className={`w-26 h-10 rounded-lg ${
+                                className={`w-26 h-10 rounded-lg max-[769px]:w-20 max-[769px]:h-8 max-[769px]:text-sm ${
                                     commentSort === "Newest"
                                         ? "bg-sheen text-white"
                                         : "bg-white text-sheen"
@@ -484,7 +493,7 @@ function NewsDetail(){
                                 Terbaru
                             </button>
                             <button
-                                className={`w-46 h-10 rounded-lg ${
+                                className={`w-46 h-10 rounded-lg max-[769px]:w-40 max-[769px]:h-8 max-[769px]:text-sm ${
                                     commentSort === "MostLiked"
                                         ? "bg-sheen text-white"
                                         : "bg-white text-sheen"

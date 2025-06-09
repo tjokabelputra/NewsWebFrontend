@@ -24,12 +24,12 @@ function Navbar({ uid, profile_pic, useCategory, onProfileClick }){
     }
 
     return(
-        <nav className="h-18 px-10 bg-darkgray flex flex-row justify-between items-center max-[1281px]:h-14">
+        <nav className="h-18 px-10 bg-darkgray flex flex-row justify-between items-center max-[1281px]:h-14 max-[769px]:px-4">
             <p
-                className="text-4xl text-white font-bold cursor-pointer max-[1281px]:text-3xl"
+                className="text-4xl text-white font-bold cursor-pointer max-[1281px]:text-3xl max-[769px]:text-2xl"
                 onClick={() => handleHome()}>NewsWeb</p>
             { useCategory && (
-                <div className="flex flex-row justify-center p-2 text-2xl gap-4 text-white font-bold cursor-pointer max-[1281px]:text-xl">
+                <div className="flex flex-row justify-center p-2 text-2xl gap-4 text-white font-bold cursor-pointer max-[1281px]:text-xl max-[769px]:text-base">
                     <p onClick={() => handleCategoryClick("Politik")}>Politik</p>
                     <p onClick={() => handleCategoryClick("Olahraga")}>Olahraga</p>
                     <p onClick={() => handleCategoryClick("Teknologi")}>Teknologi</p>
@@ -40,13 +40,15 @@ function Navbar({ uid, profile_pic, useCategory, onProfileClick }){
             )}
             {uid === "" ? (
                 <button
-                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer max-[1281px]:w-24 max-[1281px]:h-9 max-[1281px]:text-xl"
+                    className="w-33 h-11 rounded-lg bg-sheen text-2xl text-white font-bold cursor-pointer
+                    max-[1281px]:w-24 max-[1281px]:h-9 max-[1281px]:text-xl
+                    max-[769px]:w-20 max-[769px]:h-8 max-[769px]:text-sm"
                     onClick={() => handleLogin()}>Log in</button>
             ) : (
                 <img
                     src={profile_pic}
                     alt="user_pp"
-                    className="w-12 h-12 rounded-full cursor-pointer max-[1281px]:w-10 max-[1281px]:h-10"
+                    className="w-12 h-12 rounded-full cursor-pointer max-[1281px]:w-10 max-[1281px]:h-10 max-[769px]:w-8 max-[769px]:h-8"
                     onClick={() => handleDashboard()}/>
             )}
         </nav>

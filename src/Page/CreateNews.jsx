@@ -222,14 +222,15 @@ function CreateNews() {
                 profile_pic={accountDetail.profile_pic}
                 useCategory={false} />
             <main className="flex-grow min-h-screen bg-darkgray flex justify-center items-center">
-                <div className="w-320 py-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:py-6">
-                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl max-[1025px]:text-5xl">Tambah Berita</h1>
-                    <div className="py-10 px-20 flex flex-col gap-6 max-[1281px]:px-10 max-[1025px]:py-6 max-[1025px]:gap-4">
+                <div className="w-320 py-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:py-6 max-[769px]:w-176">
+                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl max-[1025px]:text-5xl max-[769px]:text-4xl">Tambah Berita</h1>
+                    <div className="py-10 px-20 flex flex-col gap-6 max-[1281px]:px-10 max-[1025px]:py-6 max-[1025px]:gap-4 max-[769px]:px-4">
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Judul</label>
                             <input
                                 type="text"
-                                className="w-280 h-12 px-4 py-2 text-base border-2 border-black rounded-lg outline-none max-[1281px]:w-220 max-[1025px]:w-196 max-[1025px]:h-10"
+                                className="w-280 h-12 px-4 py-2 text-base border-2 border-black rounded-lg outline-none
+                                max-[1281px]:w-220 max-[1025px]:w-196 max-[1025px]:h-10 max-[769px]:w-168"
                                 placeholder="Judul Berita"
                                 value={titleText}
                                 onChange={handleTitleChange}
@@ -239,7 +240,7 @@ function CreateNews() {
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Kategori</label>
                             <select
-                                className="w-60 h-12 px-4 py-2 text-base border-2 border-black rounded-lg outline-none max-[1025px]:h-10"
+                                className="w-60 h-12 px-4 py-2 text-base border-2 border-black rounded-lg outline-none max-[1025px]:h-10 max-[769px]:w-45 max-[769px]:px-2"
                                 value={category}
                                 onChange={handleCategoryChange}>
                                 <option value="Politik">Politik</option>
@@ -251,7 +252,7 @@ function CreateNews() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Gambar Banner</label>
-                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg max-[1281px]:w-120 max-[1025px]:h-10">
+                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg max-[1281px]:w-120 max-[1025px]:h-10 max-[769px]:w-90 max-[769px]:px-2">
                                 <span className="text-base truncate max-w-[70%]">
                                     {bannerFile ? bannerFile.name : "No File Selected"}
                                 </span>
@@ -268,7 +269,7 @@ function CreateNews() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Gambar Berita</label>
-                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg max-[1281px]:w-120 max-[1025px]:h-10">
+                            <div className="w-135 h-12 px-4 py-2 flex items-center justify-between border-2 rounded-lg max-[1281px]:w-120 max-[1025px]:h-10 max-[769px]:w-90 max-[769px]:px-2">
                                 <span className="text-base truncate max-w-[70%]">
                                     {imageFile ? imageFile.name : "No File Selected"}
                                 </span>
@@ -286,7 +287,7 @@ function CreateNews() {
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Isi Berita</label>
                             <textarea
-                                className="w-280 h-250 p-4 text-base border-2 border-black rounded-lg outline-none resize-none max-[1281px]:w-220 max-[1025px]:w-196"
+                                className="w-280 h-250 p-4 text-base border-2 border-black rounded-lg outline-none resize-none max-[1281px]:w-220 max-[1025px]:w-196 max-[769px]:w-168"
                                 placeholder="Isi Berita"
                                 value={contentText}
                                 onChange={handleContentChange}/>
@@ -294,7 +295,7 @@ function CreateNews() {
                         <div className="flex flex-col gap-2">
                             <label className="text-base font-bold">Rangkuman Berita</label>
                             <textarea
-                                className="w-280 h-24 p-4 text-base border-2 border-black rounded-lg outline-none resize-none max-[1281px]:w-220 max-[1025px]:w-196"
+                                className="w-280 h-24 p-4 text-base border-2 border-black rounded-lg outline-none resize-none max-[1281px]:w-220 max-[1025px]:w-196 max-[769px]:w-168"
                                 placeholder="Rangkuman Berita"
                                 value={summaryText}
                                 onChange={handleSummaryChange}
@@ -304,7 +305,10 @@ function CreateNews() {
                     </div>
                     <div className="flex justify-center items-center">
                         <button
-                            className="w-280 h-16 rounded-xl bg-sheen text-white text-5xl font-bold cursor-pointer max-[1281px]:w-220 max-[1281px]:h-14 max-[1281px]:text-4xl max-[1025px]:w-196 max-[1025px]:h-12 max-[1025px]:text-3xl"
+                            className="w-280 h-16 rounded-xl bg-sheen text-white text-5xl font-bold cursor-pointer
+                            max-[1281px]:w-220 max-[1281px]:h-14 max-[1281px]:text-4xl
+                            max-[1025px]:w-196 max-[1025px]:h-12 max-[1025px]:text-3xl
+                            max-[769px]:w-168 max-[769px]:h-10 max-[769px]:text-2xl max-[769px]:rounded-xl"
                             onClick={handleCreateNews}>
                             Tambah Berita
                         </button>

@@ -4,7 +4,10 @@ import { formatDate } from "../../Utils.js"
 function NewsManagementCard({ news, deleteNews }){
     return(
         <div className="flex flex-row gap-6 items-center max-[1025px]:gap-4">
-            <div className="w-60 h-35 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg max-[1281px]:w-55 max-[1281px]:h-32 max-[1025px]:w-50 max-[1025px]:h-29">
+            <div className="w-60 h-35 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg
+            max-[1281px]:w-55 max-[1281px]:h-32
+            max-[1025px]:w-50 max-[1025px]:h-29
+            max-[769px]:w-45 max-[769px]:h-[102px] max-[769px]:border-1">
                 <img
                     src={news.banner_url}
                     alt="banner"
@@ -20,7 +23,7 @@ function NewsManagementCard({ news, deleteNews }){
                         <p>| {formatDate(news.created_date)}</p>
                     </div>
                 </div>
-                <div className="w-30 h-10 flex-shrink-0 max-[1025px]:w-25 max-[1025px]:h-8">
+                <div className="w-30 h-10 flex-shrink-0 max-[1025px]:w-25 max-[1025px]:h-8 max-[769px]:w-22">
                     <button
                         className="w-full h-full bg-red text-white rounded-xl text-xl font-bold cursor-pointer max-[1025px]:rounded-lg"
                         onClick={() => deleteNews(news.newsid)}>

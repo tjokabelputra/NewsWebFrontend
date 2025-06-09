@@ -129,7 +129,7 @@ function Dashboard() {
                         uid={accountDetail.uid}
                         onCropComplete={handleCropComplete}/>
                 ) : (
-                    <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg">
+                    <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg max-[769px]:w-115 max-[769px]:h-128 max-[769px]:px-[30px]">
                         <div className="flex flex-col gap-8 text-center">
                             <div className="flex flex-col gap-4">
                                 <img

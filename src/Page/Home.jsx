@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode"
 import { getHomeNews, saveNews, unsaveNews } from "../action/news.action.js"
 import LoadingSpinner from "../Component/LoadingSpinner.jsx"
 import TopNewsSection from "../Component/Home/Top News/TopNewsSection.jsx"
+import TopNewsSectionAlternative from "../Component/Home/Top News/TopNewsSectionAlternative.jsx"
 import LatestNewsSection from "../Component/Home/Latest News/LatestNewsSection.jsx"
 import CategorySection from "../Component/Home/Category News/CategorySection.jsx"
 import Navbar from "../Component/Navbar.jsx"
@@ -12,6 +13,7 @@ import Footer from "../Component/Footer.jsx"
 
 function Home() {
     const navigate = useNavigate()
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [accountDetail, setAccountDetail] = useState({ uid: "", token: "", profile_pic: "" })
     const [topNews, setTopNews] = useState([])
     const [latestNews, setLatestNews] = useState([])
@@ -217,6 +219,12 @@ function Home() {
         validateToken()
     }, [])
 
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth)
+        window.addEventListener("resize", handleResize)
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
+
     return(
         <div className="font-inter min-h-screen flex flex-col">
             <ToastContainer
@@ -246,11 +254,20 @@ function Home() {
                 uid={accountDetail.uid}
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
-            <main className="py-16 px-12 min-h-screen max-[1281px]:px-10 max-[1281px]:py-12 max-[1025px]:py-10 max-[1025px]:px-6">
-                <TopNewsSection
-                    newsItems={topNews}
-                    onToggleBookmark={toggleBookmark}
-                    isLiked={isNewsLiked}/>
+            <main className="py-16 px-12 min-h-screen max-[1281px]:px-10 max-[1281px]:py-12 max-[1025px]:py-10 max-[1025px]:px-6 max-[769px]:px-4 max-[769px]:py-8">
+                {windowWidth < 769 ? (
+                    <TopNewsSectionAlternative
+                        newsItems={topNews}
+                        onToggleBookmark={toggleBookmark}
+                        isLiked={isNewsLiked}
+                    />
+                ) : (
+                    <TopNewsSection
+                        newsItems={topNews}
+                        onToggleBookmark={toggleBookmark}
+                        isLiked={isNewsLiked}
+                    />
+                )}
                 <LatestNewsSection
                     newsItems={latestNews}
                     onToggleBookmark={toggleBookmark}

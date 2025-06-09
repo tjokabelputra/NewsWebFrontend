@@ -66,11 +66,11 @@ function CreateComment({ token, uid, newsid, onCommentAdded }) {
 
 
     return(
-        <div className="mb-6 px-6 py-4 gap-2 flex flex-col rounded-2xl border-black border-1 bg-gray">
-            <h2 className="text-3xl font-bold max-[1025px]:text-2xl">Komentar</h2>
+        <div className="mb-6 px-6 py-4 gap-2 flex flex-col rounded-2xl border-black border-1 bg-gray max-[769px]:px-4">
+            <h2 className="text-3xl font-bold max-[1025px]:text-2xl max-[769px]:text-xl">Komentar</h2>
             <div className="h-24 bg-white rounded-lg border-black border-1 max-[1281px]:h-21">
                 <textarea
-                    className="w-full h-full p-2 resize-none outline-none text-base"
+                    className="w-full h-full p-2 resize-none outline-none text-base max-[769px]:text-sm"
                     placeholder="Tulis komentar disini..."
                     value={commentText}
                     onChange={handleCommentChange}
@@ -78,7 +78,7 @@ function CreateComment({ token, uid, newsid, onCommentAdded }) {
                 />
             </div>
             <div className="ml-4 flex flex-row justify-between">
-                <p>{getRemainingCharacters()} Karakter Tersisa</p>
+                <p className="text-base max-[769px]:text-sm">{getRemainingCharacters()} Karakter Tersisa</p>
                 <button
                     className="w-28 h-9 rounded-lg bg-sheen text-xl text-white font-bold cursor-pointer max-[1025px]:w-20 max-[1025px]:h-7 max-[1025px]:text-base"
                     onClick={() => handleCreateComment()}>

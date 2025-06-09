@@ -135,7 +135,7 @@ function Signup() {
                 profile_pic={""}
                 useCategory={false}/>
             <main className="flex-1 bg-darkgray flex justify-center items-center overflow-auto">
-                <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg">
+                <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg max-[769px]:w-115 max-[769px]:px-[30px]">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-4xl font-bold text-center">Daftar</h1>
                         <p className="text-base text-center">Buat akun untuk mengakses semua fitur dan layanan kami dengan mudah!</p>

@@ -164,7 +164,7 @@ function ImageCropper({ token, uid, onCropComplete }) {
     }
 
     return (
-        <div className="p-6 w-240 h-162 bg-darkgray-2 rounded-2xl flex flex-col gap-6 max-[1281px]:w-200 max-[1281px]:h-150">
+        <div className="p-6 w-240 h-162 bg-darkgray-2 rounded-2xl flex flex-col gap-6 max-[1281px]:w-200 max-[1281px]:h-150 max-[769px]:w-180">
             {isLoading && (
                 <>
                     <div className="fixed inset-0 bg-black opacity-50 z-40"></div>

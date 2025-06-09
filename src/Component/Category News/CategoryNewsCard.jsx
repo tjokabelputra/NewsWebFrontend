@@ -16,23 +16,30 @@ function CategoryNewsCard({ news, isNewsSaved, toggleBookmark }){
 
     const bookmarkIconStyle = {
         width:
-            windowWidth < 1025
-                ? "15px"
-                : windowWidth < 1281
-                    ? "18px"
-                    : "20px",
+            windowWidth < 769
+                ? "12px"
+                :windowWidth < 1025
+                    ? "15px"
+                    : windowWidth < 1281
+                        ? "18px"
+                        : "20px",
         height:
-            windowWidth < 1025
-                ? "20px"
-                : windowWidth < 1281
-                    ? "24px"
-                    : "26px",
+            windowWidth < 769
+                ? "16px"
+                :windowWidth < 1025
+                    ? "20px"
+                    : windowWidth < 1281
+                        ? "24px"
+                        : "26px",
     }
 
     return(
         <div className="flex flex-row gap-6 max-[1025px]:gap-4">
             <div className="flex flex-col justify-center">
-                <div className="w-60 h-36 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg bg-gray-200 max-[1281px]:w-55 max-[1281px]:h-32 max-[1025px]:w-50 max-[1025px]:h-29">
+                <div className="w-60 h-36 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg bg-gray-200
+                max-[1281px]:w-55 max-[1281px]:h-32
+                max-[1025px]:w-50 max-[1025px]:h-29
+                max-[769px]:w-45 max-[769px]:h-[102px] max-[769px]:border-1">
                     <img
                         src={news.banner_url}
                         alt="banner"

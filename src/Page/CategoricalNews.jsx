@@ -247,10 +247,10 @@ function CategoricalNews() {
                 profile_pic={accountDetail.profile_pic}
                 useCategory={true}/>
             <main className="flex-grow bg-darkgray flex justify-center">
-                <div className="w-320 p-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6">
-                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl max-[1025px]:text-5xl">{category}</h1>
+                <div className="w-320 p-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6 max-[769px]:w-176 max-[769px]:px-4">
+                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl max-[1025px]:text-5xl max-[769px]:text-4xl">{category}</h1>
                     <div className="mt-6 flex justify-center items-center max-[1025px]:mt-4">
-                        <div className="relative w-200 h-12 max-[1281px]:w-150 max-[1025px]:w-120 max-[1025px]:h-10">
+                        <div className="relative w-200 h-12 max-[1281px]:w-150 max-[1025px]:w-120 max-[1025px]:h-10 max-[769px]:w-90 max-[769px]:h-9">
                             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} className="text-black" />
                             </div>
@@ -263,7 +263,7 @@ function CategoricalNews() {
                                         search(searchKeyword)
                                     }
                                 }}
-                                className="w-full h-full px-8 text-base rounded-lg border-2 border-black outline-none leading-12"
+                                className="w-full h-full px-8 text-base rounded-lg border-2 border-black outline-none leading-12 max-[769px]:border-1 max-[769px]:text-sm"
                                 placeholder="Cari Berita"
                             />
                         </div>
@@ -275,7 +275,10 @@ function CategoricalNews() {
                         maxNews={maxNews}/>
                     {maxNews < categoryNews.length ? (
                         <button
-                            className="mt-10 w-300 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer max-[1281px]:w-220 max-[1025px]:w-204 max-[1025px]:h-12 max-[1025px]:text-3xl max-[1025px]:mt-6"
+                            className="mt-10 w-300 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer
+                            max-[1281px]:w-220
+                            max-[1025px]:w-204 max-[1025px]:h-12 max-[1025px]:text-3xl max-[1025px]:mt-6
+                            max-[769px]:w-168 max-[769px]:h-10 max-[769px]:text-2xl max-[769px]:rounded-xl max-[769px]:border-1"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
                     ) : null}
                 </div>
