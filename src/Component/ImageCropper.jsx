@@ -164,7 +164,9 @@ function ImageCropper({ token, uid, onCropComplete }) {
     }
 
     return (
-        <div className="p-6 w-240 h-162 bg-darkgray-2 rounded-2xl flex flex-col gap-6 max-[1281px]:w-200 max-[1281px]:h-150 max-[769px]:w-180">
+        <div className="p-6 w-240 h-162 bg-darkgray-2 rounded-2xl flex flex-col gap-6
+        max-[1281px]:w-200 max-[1281px]:h-150 max-[769px]:w-180
+        max-[481px]:w-90 max-[481px]:h-110 max-[481px]:p-2">
             {isLoading && (
                 <>
                     <div className="fixed inset-0 bg-black opacity-50 z-40"></div>
@@ -177,7 +179,7 @@ function ImageCropper({ token, uid, onCropComplete }) {
                 </>
             )}
             <div className="flex flex-row">
-                <label className="w-30 h-10 bg-sheen text-2xl text-white font-bold rounded-lg flex items-center justify-center cursor-pointer">
+                <label className="w-30 h-10 bg-sheen text-2xl text-white font-bold rounded-lg flex items-center justify-center cursor-pointer max-[481px]:w-20 max-[481px]:h-8 max-[481px]:text-base">
                     Upload
                     <input
                         type="file"
@@ -208,9 +210,9 @@ function ImageCropper({ token, uid, onCropComplete }) {
                             />
                         </ReactCrop>
                     </div>
-                    <div className="mt-6 flex justify-center">
+                    <div className="mt-6 flex justify-center max-[481px]:mt-4">
                         <button
-                            className="w-40 h-10 bg-sheen text-white text-xl font-bold rounded-lg"
+                            className="w-40 h-10 bg-sheen text-white text-xl font-bold rounded-lg max-[481px]:w-30 max-[481px]:h-8 max-[481px]:text-base"
                             onClick={handleProfilePictureChange}
                             disabled={!imgSrc || !crop || !completedCrop}
                         >

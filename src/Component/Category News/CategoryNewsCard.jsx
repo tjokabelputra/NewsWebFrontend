@@ -39,7 +39,8 @@ function CategoryNewsCard({ news, isNewsSaved, toggleBookmark }){
                 <div className="w-60 h-36 flex-shrink-0 overflow-hidden border-2 border-black rounded-lg bg-gray-200
                 max-[1281px]:w-55 max-[1281px]:h-32
                 max-[1025px]:w-50 max-[1025px]:h-29
-                max-[769px]:w-45 max-[769px]:h-[102px] max-[769px]:border-1">
+                max-[769px]:w-45 max-[769px]:h-[102px] max-[769px]:border-1
+                max-[481px]:w-40 max-[481px]:h-[90px]">
                     <img
                         src={news.banner_url}
                         alt="banner"
@@ -50,20 +51,25 @@ function CategoryNewsCard({ news, isNewsSaved, toggleBookmark }){
             </div>
             <div className="flex flex-col justify-between">
                 <p
-                    className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
+                    className="text-2xl font-bold cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base max-[481px]:text-xs"
                     onClick={() => handleNewsDetail(news.newsid)}>{news.title}</p>
                 <p
-                    className="text-xl cursor-pointer max-[1281px]:text-base max-[1025px]:text-sm"
-                    onClick={() => handleNewsDetail(news.newsid)}>{news.summary}</p>
+                    className="text-xl cursor-pointer
+                        max-[1281px]:text-base max-[1025px]:text-sm
+                        max-[481px]:text-xs max-[481px]:line-clamp-2 max-[481px]:overflow-hidden max-[481px]:text-ellipsis"
+                    onClick={() => handleNewsDetail(news.newsid)}
+                >
+                    {news.summary}
+                </p>
                 <div className="flex flex-row justify-between">
                     <div
-                        className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base"
+                        className="flex flex-row text-2xl gap-2 cursor-pointer max-[1281px]:text-lg max-[1025px]:text-base max-[481px]:text-xs"
                         onClick={() => handleNewsDetail(news.newsid)}>
                         <p className="text-sheen font-bold">{news.category}</p>
                         <p>| {formatDate(news.created_date)}</p>
                     </div>
                     <div
-                        className="flex items-center justify-center h-[26px] cursor-pointer max-[1281px]:h-6"
+                        className="flex items-center justify-center cursor-pointer"
                         onClick={() => toggleBookmark(news.newsid)}>
                         <FontAwesomeIcon
                             icon={isNewsSaved(news.newsid) ? faBookmarkSolid : faBookmarkRegular}

@@ -129,31 +129,33 @@ function Dashboard() {
                         uid={accountDetail.uid}
                         onCropComplete={handleCropComplete}/>
                 ) : (
-                    <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg max-[769px]:w-115 max-[769px]:h-128 max-[769px]:px-[30px]">
-                        <div className="flex flex-col gap-8 text-center">
+                    <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg
+                    max-[769px]:w-115 max-[769px]:h-128 max-[769px]:px-[30px]
+                    max-[481px]:w-90 max-[481px]:h-110 max-[481px]:gap-4 max-[481px]:px-4">
+                        <div className="flex flex-col gap-8 text-center max-[481px]:gap-4">
                             <div className="flex flex-col gap-4">
                                 <img
                                     src={accountDetail.profile_pic}
                                     alt="user_pp"
-                                    className="w-30 h-30 rounded-full border-black border-2 mx-auto cursor-pointer"
+                                    className="w-30 h-30 rounded-full border-black border-2 mx-auto cursor-pointer max-[481px]:w-25 max-[481px]:h-25"
                                     onClick={handleImageCropper}
                                 />
                                 <div className="flex flex-col gap-2">
-                                    <p className="text-2xl font-bold">{accountDetail.username}</p>
-                                    <p className="text-2xl">{accountDetail.email}</p>
+                                    <p className="text-2xl font-bold max-[481px]:text-xl">{accountDetail.username}</p>
+                                    <p className="text-2xl max-[481px]:text-xl">{accountDetail.email}</p>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4">
                                 <button
-                                    className="w-100 h-12 bg-sheen text-white text-2xl font-bold rounded-2xl cursor-pointer"
+                                    className="w-full h-12 bg-sheen text-white text-2xl font-bold rounded-2xl cursor-pointer max-[481px]:h-10 max-[481px]:rounded-lg max-[481px]:text-xl"
                                     onClick={handleSavedNews}>Berita Tersimpan</button>
                                 {accountDetail.role === "Admin" && (
                                     <button
-                                        className="w-100 h-12 bg-sheen text-white text-2xl font-bold rounded-2xl cursor-pointer"
+                                        className="w-full h-12 bg-sheen text-white text-2xl font-bold rounded-2xl cursor-pointer max-[481px]:h-10 max-[481px]:rounded-lg max-[481px]:text-xl"
                                         onClick={handleNewsManagement}>Manajemen Berita</button>
                                 )}
                                 <button
-                                    className="w-100 h-12 bg-red text-white text-2xl font-bold rounded-2xl cursor-pointer"
+                                    className="w-full h-12 bg-red text-white text-2xl font-bold rounded-2xl cursor-pointer max-[481px]:h-10 max-[481px]:rounded-lg max-[481px]:text-xl"
                                     onClick={handleLogoutClick}>Keluar Akun</button>
                             </div>
                         </div>

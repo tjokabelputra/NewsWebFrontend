@@ -39,7 +39,7 @@ function RestTopNews({ news, onToggleBookmark, isLiked }){
                         <p>| {formatDate(news.created_date)}</p>
                     </div>
                     <div
-                        className="flex items-center justify-center h-[26px] cursor-pointer"
+                        className="flex items-center justify-center cursor-pointer"
                         onClick={() => onToggleBookmark(news.newsid)}>
                         <FontAwesomeIcon
                             icon={isLiked(news.newsid) ? faBookmarkSolid : faBookmarkRegular}

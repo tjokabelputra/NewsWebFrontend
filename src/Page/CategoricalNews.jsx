@@ -9,10 +9,12 @@ import LoadingSpinner from "../Component/LoadingSpinner.jsx"
 import CategoryNews from "../Component/Category News/CategoryNews.jsx"
 import Navbar from "../Component/Navbar.jsx"
 import Footer from "../Component/Footer.jsx"
+import NavbarMobile from "../Component/NavbarMobile.jsx";
 
 function CategoricalNews() {
     const navigate = useNavigate()
     const { category } = useParams()
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [accountDetail, setAccountDetail] = useState({uid:"", profile_pic:"", token:""})
     const [currentCategory, setCurrentCategory] = useState("")
     const [searchKeyword, setSearchKeyword] = useState("")
@@ -242,15 +244,25 @@ function CategoricalNews() {
                     </div>
                 </>
             )}
-            <Navbar
-                uid={accountDetail.uid}
-                profile_pic={accountDetail.profile_pic}
-                useCategory={true}/>
+            {windowWidth < 481 ? (
+                <NavbarMobile
+                    uid={accountDetail.uid}
+                    profile_pic={accountDetail.profile_pic}
+                    useCategory={true}/>
+            ) : (
+                <Navbar
+                    uid={accountDetail.uid}
+                    profile_pic={accountDetail.profile_pic}
+                    useCategory={true}/>
+            )}
             <main className="flex-grow bg-darkgray flex justify-center">
-                <div className="w-320 p-10 min-h-screen bg-white max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6 max-[769px]:w-176 max-[769px]:px-4">
-                    <h1 className="text-7xl text-sheen font-bold text-center max-[1281px]:text-6xl max-[1025px]:text-5xl max-[769px]:text-4xl">{category}</h1>
-                    <div className="mt-6 flex justify-center items-center max-[1025px]:mt-4">
-                        <div className="relative w-200 h-12 max-[1281px]:w-150 max-[1025px]:w-120 max-[1025px]:h-10 max-[769px]:w-90 max-[769px]:h-9">
+                <div className="w-320 p-10 min-h-screen bg-white
+                max-[1281px]:w-240 max-[1025px]:w-216 max-[1025px]:p-6 max-[769px]:w-176 max-[769px]:px-4 max-[481px]:w-120 max-[481px]:p-4">
+                    <h1 className="text-7xl text-sheen font-bold text-center
+                    max-[1281px]:text-6xl max-[1025px]:text-5xl max-[769px]:text-4xl max-[481px]:text-3xl">{category}</h1>
+                    <div className="mt-6 flex justify-center items-center max-[1025px]:mt-4 max-[481px]:mt-2">
+                        <div className="relative w-200 h-12
+                        max-[1281px]:w-150 max-[1025px]:w-120 max-[1025px]:h-10 max-[769px]:w-90 max-[769px]:h-9 max-[481px]:w-80 max-[481px]:h-8">
                             <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} className="text-black" />
                             </div>
@@ -263,7 +275,7 @@ function CategoricalNews() {
                                         search(searchKeyword)
                                     }
                                 }}
-                                className="w-full h-full px-8 text-base rounded-lg border-2 border-black outline-none leading-12 max-[769px]:border-1 max-[769px]:text-sm"
+                                className="w-full h-full px-8 text-base rounded-lg border-2 border-black outline-none leading-12 max-[769px]:border-1 max-[769px]:text-sm max-[481px]:text-xs"
                                 placeholder="Cari Berita"
                             />
                         </div>
@@ -275,10 +287,10 @@ function CategoricalNews() {
                         maxNews={maxNews}/>
                     {maxNews < categoryNews.length ? (
                         <button
-                            className="mt-10 w-300 h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer
-                            max-[1281px]:w-220
-                            max-[1025px]:w-204 max-[1025px]:h-12 max-[1025px]:text-3xl max-[1025px]:mt-6
-                            max-[769px]:w-168 max-[769px]:h-10 max-[769px]:text-2xl max-[769px]:rounded-xl max-[769px]:border-1"
+                            className="mt-10 w-full h-16 rounded-2xl text-4xl font-bold border-black border-2 cursor-pointer
+                            max-[1025px]:h-12 max-[1025px]:text-3xl max-[1025px]:mt-6
+                            max-[769px]:h-10 max-[769px]:text-2xl max-[769px]:rounded-xl max-[769px]:border-1
+                            max-[481px]:h-8 max-[481px]:text-xl"
                             onClick={extentPage}>Tampilkan Lebih Banyak Berita</button>
                     ) : null}
                 </div>

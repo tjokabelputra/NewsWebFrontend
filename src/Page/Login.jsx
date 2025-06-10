@@ -108,15 +108,17 @@ function Login() {
                 useCategory={false} />
             <main className="flex-1 bg-darkgray flex justify-center items-center overflow-auto">
 
-                <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg max-[769px]:w-115 max-[769px]:h-128 max-[769px]:px-[30px]">
+                <div className="w-120 h-135 px-10 flex flex-col justify-center gap-6 bg-white rounded-2xl shadow-lg
+                max-[769px]:w-115 max-[769px]:h-128 max-[769px]:px-[30px]
+                max-[481px]:w-90 max-[481px]:h-110 max-[481px]:gap-4 max-[481px]:px-4">
                     <div className="flex flex-col gap-2">
-                        <h1 className="text-4xl font-bold text-center">Masuk</h1>
-                        <p className="text-base text-center">Silakan masukkan email dan password Anda untuk melanjutkan.</p>
+                        <h1 className="text-4xl font-bold text-center max-[481px]:text-3xl">Masuk</h1>
+                        <p className="text-base text-center max-[481px]:text-sm">Silakan masukkan email dan password Anda untuk melanjutkan.</p>
                     </div>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            <label className="text-base font-bold">Email</label>
-                            <div className="flex items-center w-full h-12 px-2 rounded-lg border-2 border-black">
+                            <label className="text-base font-bold max-[481px]:text-sm">Email</label>
+                            <div className="flex items-center w-full h-12 px-2 rounded-lg border-2 border-black max-[481px]:h-10 max-[481px]:text-sm">
                                 <FontAwesomeIcon icon={faEnvelope} />
                                 <input
                                     type="email"
@@ -128,8 +130,8 @@ function Login() {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-base font-bold">Password</label>
-                            <div className="flex items-center w-full h-12 px-2 rounded-lg border-2 border-black">
+                            <label className="text-base font-bold max-[481px]:text-sm">Password</label>
+                            <div className="flex items-center w-full h-12 px-2 rounded-lg border-2 border-black max-[481px]:h-10 max-[481px]:text-sm">
                                 <FontAwesomeIcon icon={faKey} />
                                 <input
                                     type={showPassword ? "text" : "password"}
@@ -146,9 +148,9 @@ function Login() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col justify-between gap-4">
+                    <div className="flex flex-col justify-between gap-4 max-[481px]:gap-2">
                         <button
-                            className="w-100 h-12 bg-sheen rounded-2xl text-white text-2xl font-bold cursor-pointer"
+                            className="w-full h-12 bg-sheen rounded-2xl text-white text-2xl font-bold cursor-pointer max-[481px]:h-10 max-[481px]:rounded-lg max-[481px]:text-xl"
                             onClick={() => handleLoginAccount()}>Masuk</button>
                         <div className="flex flex-row gap-1 justify-center">
                             <p className="text-base">Belum Memiliki Akun?</p>

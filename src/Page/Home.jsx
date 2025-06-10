@@ -10,6 +10,7 @@ import LatestNewsSection from "../Component/Home/Latest News/LatestNewsSection.j
 import CategorySection from "../Component/Home/Category News/CategorySection.jsx"
 import Navbar from "../Component/Navbar.jsx"
 import Footer from "../Component/Footer.jsx"
+import NavbarMobile from "../Component/NavbarMobile.jsx"
 
 function Home() {
     const navigate = useNavigate()
@@ -250,11 +251,18 @@ function Home() {
                     </div>
                 </>
             )}
-            <Navbar
-                uid={accountDetail.uid}
-                profile_pic={accountDetail.profile_pic}
-                useCategory={true}/>
-            <main className="py-16 px-12 min-h-screen max-[1281px]:px-10 max-[1281px]:py-12 max-[1025px]:py-10 max-[1025px]:px-6 max-[769px]:px-4 max-[769px]:py-8">
+            {windowWidth < 481 ? (
+                <NavbarMobile
+                    uid={accountDetail.uid}
+                    profile_pic={accountDetail.profile_pic}
+                    useCategory={true}/>
+            ) : (
+                <Navbar
+                    uid={accountDetail.uid}
+                    profile_pic={accountDetail.profile_pic}
+                    useCategory={true}/>
+            )}
+            <main className="py-16 px-12 min-h-screen max-[1281px]:px-10 max-[1281px]:py-12 max-[1025px]:py-10 max-[1025px]:px-6 max-[769px]:px-4 max-[769px]:py-8 max-[481px]:px-2 max-[481px]:py-6">
                 {windowWidth < 769 ? (
                     <TopNewsSectionAlternative
                         newsItems={topNews}
